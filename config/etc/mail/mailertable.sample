@@ -1,0 +1,13 @@
+# $FreeBSD: releng/10.3/etc/mail/mailertable.sample 58193 2000-03-18 06:38:23Z rwatson $
+#
+# List of domains (possibly wildcarded) and destination mailers
+#
+post.nchadvisors.kiev.ua 127.0.0.1
+nchadvisors.kiev.ua smtp8:nch
+nchcapital.com  smtp8:nchny.ipsec
+nchadvisors.com	smtp8:nchny.ipsec
+nchadvisors.ru  smtp8:nchru.ipsec
+nchriga.lv      smtp8:nchlv.ipsec
+#.my.domain		xnet:%1.my.domain
+#uuhost1.my.domain	suucp:uuhost1
+#.bitnet			smtp:relay.bit.net

@@ -1,0 +1,2 @@
+#Use this command to configure your cyrus imap server
+cyradm --user acid --server post.nchadvisors.kiev.ua

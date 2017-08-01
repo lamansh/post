@@ -1,0 +1,57 @@
+#!/usr/local/bin/perl
+use File::stat;
+use File::Copy;
+use Time::localtime;
+$cat="/usr/cyrus/imap/user/mailstore";
+$year = localtime->year()+1900;
+print "$year\n";
+print "/usr/cyrus/imap/archive/$year\n";
+if(opendir(my $yeardir, "/usr/cyrus/imap/archive/$year")!=1){
+mkdir "/usr/cyrus/imap/archive/$year", 0600 or warn "$!\n";
+}
+#exit 0; 
+opendir (my $MAILDIR, $cat) || die "Can't open dir $cat: $!";
+#for each file
+   
+    $counter_f =0;
+    $counter_m =0;
+    $size=0;
+    $month_n = localtime->mon();
+    $month_n = $month_n - 1 ;
+    @month_w = qw(Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec);
+    $month = $month_w[$month_n];
+#    $month = "Dec";
+    print"$month\n";
+#    exit 0;
+    unlink glob "/usr/cyrus/imap/archive/$year/$month/*";
+    if (opendir (my $ARCHDIR, "/usr/cyrus/imap/archive/$year/$month" )!= 1){ 
+    mkdir "/usr/cyrus/imap/archive/$year/$month", 0400 or warn "$!\n";
+    print "creating dir /usr/cyrus/imap/archive/$year/$month\n"
+    
+    }
+#    print "$month\n";
+    while($fname = readdir $MAILDIR){
+    next if $fname =~/^\./;
+    $fnamef = "$cat/$fname";
+    next unless -r $fnamef;
+    $date_string = ctime(stat($fnamef)->ctime);
+    
+    if ($date_string =~m/$month/){
+    #print "1 :: $` :: \n 2 :: $& \n 3:: $+ \n ";
+    $counter_f++ ; 
+    $size = $size + stat($fnamef)->size;   
+    $to = "/usr/cyrus/imap/archive/$year/$month/$fname";
+    copy("$fnamef", "$to");
+    
+	  }
+
+    } 
+    
+print "$counter_f Messages\n";
+$size = $size/1048576;
+print "size $size Mb\n";
+print "Wait archiving $month in progress....\n";
+system("/usr/bin/tar Pcfz /usr/cyrus/imap/archive/$year/$month.tar.gz /usr/cyrus/imap/archive/$year/$month") == 0
+    or die "system:\n @args \n failed: $?";
+print "archiving complete: /usr/cyrus/imap/archive/$year/$month.tar.gz\n";
+unlink glob "/usr/cyrus/imap/archive/$year/$month/*" or warn "$!\n"; 

@@ -1,0 +1,2 @@
+openssl genrsa -rand -genkey -out mailkey.pem
+openssl req -new -x509 -days 3650 -key mailkey.pem -out mailcert.pem

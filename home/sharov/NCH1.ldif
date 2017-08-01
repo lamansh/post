@@ -1,0 +1,1149 @@
+dn: dc=nchadvisors
+objectClass: dcObject
+objectClass: organization
+objectClass: top
+dc: nchadvisors
+o: nchadvisors
+
+dn: ou=nchkiev,dc=nchadvisors
+ou: nchkiev
+objectClass: organizationalUnit
+objectClass: top
+telephoneNumber: 0443905720
+
+dn: ou=nchmoscow,dc=nchadvisors
+ou: nchmoscow
+objectClass: organizationalUnit
+objectClass: top
+
+dn: ou=nchnewyork,dc=nchadvisors
+ou: nchnewyork
+objectClass: organizationalUnit
+objectClass: top
+
+dn: cn=Annie Setrakian,ou=nchnewyork,dc=nchadvisors
+cn: Annie Setrakian
+sn: Annie Setrakian
+o: NCH
+givenName: NCH Capital Inc.
+mobile: 3231
+objectClass: inetOrgPerson
+objectClass: top
+mail: annie@nchcapital.com
+
+dn: cn=Audrey Verga,ou=nchnewyork,dc=nchadvisors
+cn: Audrey Verga
+sn: Audrey Verga
+o: NCH
+givenName: NCH Capital Inc.
+mobile: 3220
+objectClass: inetOrgPerson
+objectClass: top
+mail: audrey@nchcapital.com
+
+dn: cn=Bing Huang,ou=nchnewyork,dc=nchadvisors
+cn: Bing Huang
+sn: Bing Huang
+o: NCH
+givenName: Accounting
+mobile: 3245
+objectClass: inetOrgPerson
+objectClass: top
+mail: bing@nchcapital.com
+
+dn: cn=Carol Tsui,ou=nchnewyork,dc=nchadvisors
+cn: Carol Tsui
+sn: Carol Tsui
+o: NCH
+givenName: NCH Capital Inc.
+mobile: 3267
+objectClass: inetOrgPerson
+objectClass: top
+mail: carol@nchcapital .com
+
+dn: cn=Chris Abbott,ou=nchnewyork,dc=nchadvisors
+cn: Chris Abbott
+sn: Chris Abbott
+o: NCH
+givenName: NCH Capital Inc.
+mobile: 3225
+objectClass: inetOrgPerson
+objectClass: top
+mail: chris@nchcapital.com
+
+dn: cn=Dmitry Petrov,ou=nchnewyork,dc=nchadvisors
+cn: Dmitry Petrov
+sn: Dmitry Petrov
+o: NCH
+givenName: NCH Capital Inc.
+mobile: 3235
+objectClass: inetOrgPerson
+objectClass: top
+mail: dpetrov@nchcapital.com
+
+dn: cn=Don Olney,ou=nchnewyork,dc=nchadvisors
+cn: Don Olney
+sn: Don Olney
+o: NCH
+givenName: NCH Capital Inc.
+mobile: 3230
+objectClass: inetOrgPerson
+objectClass: top
+mail: don@nchcapital.com
+
+dn: cn=Edna Beaudette,ou=nchnewyork,dc=nchadvisors
+cn: Edna Beaudette
+sn: Edna Beaudette
+o: NCH
+givenName: NCH Capital Inc.
+mobile: 3228
+objectClass: inetOrgPerson
+objectClass: top
+mail: edna@nchcapital.com
+
+dn: cn=Edward Parisi,ou=nchnewyork,dc=nchadvisors
+cn: Edward Parisi
+sn: Edward Parisi
+o: NCH
+givenName: NCH Capital Inc.
+mobile: 3251
+objectClass: inetOrgPerson
+objectClass: top
+mail: ed@nchcapital.com
+
+dn: cn=George Rohr,ou=nchnewyork,dc=nchadvisors
+cn: George Rohr
+sn: George Rohr
+o: NCH
+givenName: NCH Capital Inc.
+mobile: 3206
+objectClass: inetOrgPerson
+objectClass: top
+mail: george@nchcapital.com
+
+dn: cn=Gil Schorr,ou=nchnewyork,dc=nchadvisors
+cn: Gil Schorr
+sn: Gil Schorr
+o: NCH
+givenName: NCH Capital Inc.
+mobile: 3275
+objectClass: inetOrgPerson
+objectClass: top
+mail: gil@nchcapital.com
+
+dn: cn=Gregory Katz,ou=nchnewyork,dc=nchadvisors
+cn: Gregory Katz
+sn: Gregory Katz
+o: NCH
+givenName: NCH Capital Inc.
+mobile: 3219
+objectClass: inetOrgPerson
+objectClass: top
+mail: gkatz@nchcapital.com
+
+dn: cn=Joseph Bond,ou=nchnewyork,dc=nchadvisors
+cn: Joseph Bond
+sn: Joseph Bond
+o: NCH
+givenName: NCH Capital Inc.
+mobile: 3276
+objectClass: inetOrgPerson
+objectClass: top
+mail: joe@nchcapital.com
+
+dn: cn=Kathy Lendle,ou=nchnewyork,dc=nchadvisors
+cn: Kathy Lendle
+sn: Kathy Lendle
+o: NCH
+givenName: NCH Capital Inc.
+mobile: 3222
+objectClass: inetOrgPerson
+objectClass: top
+mail: kathy@nchcapital.com
+
+dn: cn=Ludmila Zekov,ou=nchnewyork,dc=nchadvisors
+cn: Ludmila Zekov
+sn: Ludmila Zekov
+o: NCH
+givenName: NCH Capital Inc.
+mobile: 3209
+objectClass: inetOrgPerson
+objectClass: top
+mail: ludmila@nchcapital.com
+
+dn: cn=Marina Khariton,ou=nchnewyork,dc=nchadvisors
+cn: Marina Khariton
+sn: Marina Khariton
+o: NCH
+givenName: NCH Capital Inc.
+mobile: 3246
+objectClass: inetOrgPerson
+objectClass: top
+mail: marina@nchcapital.com
+
+dn: cn=Max Gurevich,ou=nchnewyork,dc=nchadvisors
+cn: Max Gurevich
+sn: Max Gurevich
+o: NCH
+givenName: NCH Capital Inc.
+mobile: 3224
+objectClass: inetOrgPerson
+objectClass: top
+mail: max@nchcapital.com
+
+dn: cn=Michael Kaplan,ou=nchnewyork,dc=nchadvisors
+cn: Michael Kaplan
+sn: Michael Kaplan
+o: NCH
+givenName: NCH Capital Inc.
+mobile: 3231
+objectClass: inetOrgPerson
+objectClass: top
+mail: michael@nchcapital.com
+
+dn: cn=Nancy Pun,ou=nchnewyork,dc=nchadvisors
+cn: Nancy Pun
+sn: Nancy Pun
+o: NCH
+givenName: NCH Capital Inc.
+mobile: 3254
+objectClass: inetOrgPerson
+objectClass: top
+mail: nancy@nchcapital.com
+
+dn: cn=Paul Giulekas,ou=nchnewyork,dc=nchadvisors
+cn: Paul Giulekas
+sn: Paul Giulekas
+o: NCH
+givenName: NCH Capital Inc.
+mobile: 3279
+objectClass: inetOrgPerson
+objectClass: top
+mail: paul@nchcapital.com
+
+dn: cn=Rebecca Shen,ou=nchnewyork,dc=nchadvisors
+cn: Rebecca Shen
+sn: Rebecca Shen
+o: NCH
+givenName: NCH Capital Inc.
+mobile: 3208
+objectClass: inetOrgPerson
+objectClass: top
+mail: rebecca@nchcapital.com
+
+dn: cn=Stephanie Batchelor,ou=nchnewyork,dc=nchadvisors
+cn: Stephanie Batchelor
+sn: Stephanie Batchelor
+o: NCH
+givenName: NCH Capital Inc.
+mobile: 3241
+objectClass: inetOrgPerson
+objectClass: top
+mail: stephanie@nchcapital.com
+
+dn: cn=Violet Baturov,ou=nchnewyork,dc=nchadvisors
+cn: Violet Baturov
+sn: Violet Baturov
+o: NCH
+givenName: NCH Capital Inc.
+mobile: 3265
+objectClass: inetOrgPerson
+objectClass: top
+mail: violet@nchcapital.com
+
+dn: cn=Yana Gersher,ou=nchnewyork,dc=nchadvisors
+cn: Yana Gersher
+sn: Yana Gersher
+o: NCH
+givenName: NCH Capital Inc.
+mobile: 3223
+objectClass: inetOrgPerson
+objectClass: top
+mail: yana@nchcapital.com
+
+dn: cn=Yitong Zheng,ou=nchnewyork,dc=nchadvisors
+cn: Yitong Zheng
+sn: Yitong Zheng
+o: NCH
+givenName: NCH Capital Inc.
+mobile: 3210
+objectClass: inetOrgPerson
+objectClass: top
+mail: yitong@nchcapital.com
+
+dn: cn=Yulia Kosiw,ou=nchnewyork,dc=nchadvisors
+cn: Yulia Kosiw
+sn: Yulia Kosiw
+mail: yulia@nchcapital.com
+o: NCH
+givenName: Yulia Kosiw
+mobile: 3221
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: ou=nchromania,dc=nchadvisors
+ou: nchromania
+objectClass: organizationalUnit
+objectClass: top
+
+dn: cn=Alina Andrei,ou=nchromania,dc=nchadvisors
+cn: Alina Andrei
+sn: Alina Andrei
+givenName: ACTIVE International
+objectClass: inetOrgPerson
+objectClass: top
+mail: alinaa@active.ro
+
+dn: cn=Augustin Avram,ou=nchromania,dc=nchadvisors
+cn: Augustin Avram
+sn: Augustin Avram
+givenName: ACTIVE International
+objectClass: inetOrgPerson
+objectClass: top
+mail: augustin@active.ro
+
+dn: cn=Bogdan Sterie,ou=nchromania,dc=nchadvisors
+cn: Bogdan Sterie
+sn: Bogdan Sterie
+givenName: Bogdan Sterie
+objectClass: inetOrgPerson
+objectClass: top
+mail: bogdan@active.ro
+
+dn: cn=Claudiu Covrig,ou=nchromania,dc=nchadvisors
+cn: Claudiu Covrig
+sn: Claudiu Covrig
+givenName: ACTIVE International
+objectClass: inetOrgPerson
+objectClass: top
+mail: claudiuc@active.ro
+
+dn: cn=Costin Raducanu,ou=nchromania,dc=nchadvisors
+cn: Costin Raducanu
+sn: Costin Raducanu
+givenName: ACTIVE International
+objectClass: inetOrgPerson
+objectClass: top
+mail: rcostin@active.ro
+
+dn: cn=Cristian Andrei,ou=nchromania,dc=nchadvisors
+cn: Cristian Andrei
+sn: Cristian Andrei
+givenName: Active International
+objectClass: inetOrgPerson
+objectClass: top
+mail: andrei@active.ro
+
+dn: cn=Cristina Hodea,ou=nchromania,dc=nchadvisors
+cn: Cristina Hodea
+sn: Cristina Hodea
+givenName: ACTIVE International
+objectClass: inetOrgPerson
+objectClass: top
+mail: cristinah@active.ro
+
+dn: cn=Cristina Plesca,ou=nchromania,dc=nchadvisors
+cn: Cristina Plesca
+sn: Cristina Plesca
+givenName: ACTIVE International
+objectClass: inetOrgPerson
+objectClass: top
+mail: cristinap@active.ro
+
+dn: cn=Dan Marina,ou=nchromania,dc=nchadvisors
+cn: Dan Marina
+sn: Dan Marina
+givenName: ACTIVE International
+objectClass: inetOrgPerson
+objectClass: top
+mail: dan@active.ro
+
+dn: cn=Dumitriu D. Radu,ou=nchromania,dc=nchadvisors
+cn: Dumitriu D. Radu
+sn: Dumitriu D. Radu
+givenName:: RHVtaXRyaXUgRC4gUmFkdSA=
+objectClass: inetOrgPerson
+objectClass: top
+mail: radu@active.ro
+
+dn: cn=Gabriel Techera,ou=nchromania,dc=nchadvisors
+cn: Gabriel Techera
+sn: Gabriel Techera
+givenName: ACTIVE International
+objectClass: inetOrgPerson
+objectClass: top
+mail: gabrielt@active.ro
+
+dn: cn=Marieke Meeder,ou=nchromania,dc=nchadvisors
+cn: Marieke Meeder
+sn: Marieke Meeder
+givenName: ACTIVE International
+objectClass: inetOrgPerson
+objectClass: top
+mail: marieke@active.ro
+
+dn: cn=Mihai Marcu,ou=nchromania,dc=nchadvisors
+cn: Mihai Marcu
+sn: Mihai Marcu
+givenName: ACTIVE International
+objectClass: inetOrgPerson
+objectClass: top
+mail: mihaim@active.ro
+
+dn: cn=orlando.nicoara,ou=nchromania,dc=nchadvisors
+cn: orlando.nicoara
+sn: orlando.nicoara
+mail: orlando.nicoara@netbridge.ro
+givenName: orlando.nicoara
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Radu Sitaru,ou=nchromania,dc=nchadvisors
+cn: Radu Sitaru
+sn: Radu Sitaru
+givenName:: UmFkdSBTaXRhcnUg
+objectClass: inetOrgPerson
+objectClass: top
+mail: sradu@active.ro
+
+dn: cn=Rodica Stoenescu,ou=nchromania,dc=nchadvisors
+cn: Rodica Stoenescu
+sn: Rodica Stoenescu
+givenName: ACTIVE International
+objectClass: inetOrgPerson
+objectClass: top
+mail: rodicas@active.ro
+
+dn: cn=Stelian Mitu,ou=nchromania,dc=nchadvisors
+cn: Stelian Mitu
+sn: Stelian Mitu
+givenName: ACTIVE International
+objectClass: inetOrgPerson
+objectClass: top
+mail: stelianm@active.ro
+
+dn: ou=nchrelated,dc=nchadvisors
+ou: nchrelated
+objectClass: organizationalUnit
+objectClass: top
+
+dn: cn=Arsen Kanafin,ou=nchrelated,dc=nchadvisors
+cn: Arsen Kanafin
+sn: Arsen Kanafin
+mail: arsen@kbs.almaty.kz
+objectClass: inetOrgPerson
+objectClass: top
+o: related
+
+dn: cn=KBS Securit,ou=nchrelated,dc=nchadvisors
+cn: KBS Securit
+sn: KBS Securit
+givenName: KBS
+objectClass: inetOrgPerson
+objectClass: top
+o: related
+mail: securit@kbs.almaty.kz
+
+dn: cn=Lillian Tabacinic,ou=nchrelated,dc=nchadvisors
+cn: Lillian Tabacinic
+sn: Lillian Tabacinic
+objectClass: inetOrgPerson
+objectClass: top
+audio: related
+mail: ltabacinic@cie.fr
+
+dn: cn=Moises Gorin,ou=nchrelated,dc=nchadvisors
+cn: Moises Gorin
+sn: Moises Gorin
+mail: ggccorp@aol.com
+givenName: GGC Corp.
+objectClass: inetOrgPerson
+objectClass: top
+o: related
+
+dn: cn=Moris Tabacinic,ou=nchrelated,dc=nchadvisors
+cn: Moris Tabacinic
+sn: Moris Tabacinic
+objectClass: inetOrgPerson
+objectClass: top
+o: related
+mail:: bHRhYmFjaW5pY0BjaWUuZnIg
+
+dn: cn=Motti Korf,ou=nchrelated,dc=nchadvisors
+cn: Motti Korf
+sn: Motti Korf
+mail: motti@optima.dp.ua
+givenName: Optima
+objectClass: inetOrgPerson
+objectClass: top
+o: related
+
+dn: cn=NCH-Almaty,ou=nchrelated,dc=nchadvisors
+cn: NCH-Almaty
+sn: NCH-Almaty
+mail: nch_advisors@kaznet.kz
+objectClass: inetOrgPerson
+objectClass: top
+audio: related
+o: related
+
+dn: cn=NCH-Russia,ou=nchrelated,dc=nchadvisors
+cn: NCH-Russia
+sn: NCH-Russia
+objectClass: inetOrgPerson
+objectClass: top
+o: related
+mail:: b2ZmaWNlQG5jaGFkdmlzb3JzLnJ1IA==
+
+dn: cn=NCH-Ukraine,ou=nchrelated,dc=nchadvisors
+cn: NCH-Ukraine
+sn: NCH-Ukraine
+mail: nch@advisors.kiev.ua
+objectClass: inetOrgPerson
+objectClass: top
+o: related
+
+dn: cn=Reuben Rinat,ou=nchrelated,dc=nchadvisors
+cn: Reuben Rinat
+sn: Reuben Rinat
+givenName: NCH Advisors
+objectClass: inetOrgPerson
+objectClass: top
+o: related
+mail: REUBEN_RINAT@hotmail.com
+
+dn: cn=Vladimir Levin,ou=nchrelated,dc=nchadvisors
+cn: Vladimir Levin
+sn: Vladimir Levin
+mail: baltpark@carry.neonet.lv
+givenName: Riga
+objectClass: inetOrgPerson
+objectClass: top
+o: related
+
+dn: cn=Zhaniya B. Ussen,ou=nchrelated,dc=nchadvisors
+cn: Zhaniya B. Ussen
+sn: Zhaniya B. Ussen
+givenName: Assistance, L.L.C.
+objectClass: inetOrgPerson
+objectClass: top
+o: related
+mail: tim@assist.almaty.kz
+
+dn: cn=Alexander Dibrova,ou=nchkiev,dc=nchadvisors
+cn: Alexander Dibrova
+sn: Alexander Dibrova
+mail: av@nchadvisors.kiev.ua
+o: NCH Advisors
+title: Trader, Trading Dpt.
+telephoneNumber: 124
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Anastasiya Volchenko,ou=nchkiev,dc=nchadvisors
+cn: Anastasiya Volchenko
+sn: Anastasiya Volchenko
+mail: anastasiya@nchadvisors.kiev.ua
+o: NCH Advisors
+objectClass: inetOrgPerson
+objectClass: top
+telephoneNumber: 151
+title: Marketing specialist
+
+dn: cn=Dmitry Drozhin,ou=nchkiev,dc=nchadvisors
+cn: Dmitry Drozhin
+sn: Dmitry Drozhin
+mail: dima@nchadvisors.kiev.ua
+o: NCH Advisors
+title: Back-office Specialist
+telephoneNumber: 123
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Ethan Taylor,ou=nchkiev,dc=nchadvisors
+cn: Ethan Taylor
+sn: Ethan Taylor
+mail: ethan@nchadvisors.kiev.ua
+o: NCH Advisors
+title: Head of Trading
+telephoneNumber: 128
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Ivan Osadchenko,ou=nchkiev,dc=nchadvisors
+cn: Ivan Osadchenko
+sn: Ivan Osadchenko
+mail: ivan@nchadvisors.kiev.ua
+o: NCH Advisors
+title: Real Estates Dpt.
+telephoneNumber: 147
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Julia Belyakova,ou=nchkiev,dc=nchadvisors
+cn: Julia Belyakova
+sn: Julia Belyakova
+mail: julia@nchadvisors.kiev.ua
+o: NCH Advisors
+title: Financial Director
+telephoneNumber: 110
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Ludmila Pavlotskaya,ou=nchkiev,dc=nchadvisors
+cn: Ludmila Pavlotskaya
+sn: Ludmila Pavlotskaya
+mail: plm@nchadvisors.kiev.ua
+o: NCH Advisors
+title: Lawyer, Legal Dpt.
+telephoneNumber: 141
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Ludmila Trubochkina,ou=nchkiev,dc=nchadvisors
+cn: Ludmila Trubochkina
+sn: Ludmila Trubochkina
+mail: luda@nchadvisors.kiev.ua
+o: NCH Advisors
+title: Accounting Dpt.
+telephoneNumber: 119
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Maria Osyka,ou=nchkiev,dc=nchadvisors
+cn: Maria Osyka
+sn: Maria Osyka
+mail: maria@nchadvisors.kiev.ua
+o: NCH Advisors
+title: Director Agriculture Investments
+telephoneNumber: 136
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Michael Bertram,ou=nchkiev,dc=nchadvisors
+cn: Michael Bertram
+sn: Michael Bertram
+mail: michael@nchadvisors.kiev.ua
+o: NCH Advisors
+title: Director of Private Equity Investments
+telephoneNumber: 137
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Natasha Morozova,ou=nchkiev,dc=nchadvisors
+cn: Natasha Morozova
+sn: Natasha Morozova
+mail: natasha@nchadvisors.kiev.ua
+o: NCH Advisors
+title: Head of Beak-Office
+telephoneNumber: 126
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Nina Fedorenko,ou=nchkiev,dc=nchadvisors
+cn: Nina Fedorenko
+sn: Nina Fedorenko
+mail: nina@nchadvisors.kiev.ua
+o: NCH Advisors
+title: Accounting Dpt.
+telephoneNumber: 117
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Oleg Sharov,ou=nchkiev,dc=nchadvisors
+cn: Oleg Sharov
+sn: Oleg Sharov
+mail: sharov@nchadvisors.kiev.ua
+o: NCH Advisors
+title: IT Spetialist
+telephoneNumber: 150
+objectClass: inetOrgPerson
+objectClass: top
+userPassword:: YXJub2xk
+
+dn: cn=Peter Mitchell,ou=nchkiev,dc=nchadvisors
+cn: Peter Mitchell
+sn: Peter Mitchell
+mail: pmitchell@nchadvisors.kiev.ua
+o: NCH Advisors
+title: Agriculture Projects Dpt.
+telephoneNumber: 130
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Roman Morozov,ou=nchkiev,dc=nchadvisors
+cn: Roman Morozov
+sn: Roman Morozov
+mail: roman@nchadvisors.kiev.ua
+o: NCH Advisors
+title: IT Specialist
+telephoneNumber: 100
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Svetlana Ziatkevich,ou=nchkiev,dc=nchadvisors
+mail: sveta@nchadvisors.kiev.ua
+o: NCH Advisors
+title: Reception
+objectClass: inetOrgPerson
+objectClass: top
+telephoneNumber: 102
+sn: Svetlana Ziatkevich
+cn: Svetlana Ziatkevich
+
+dn: cn=Tanya Chernonok,ou=nchkiev,dc=nchadvisors
+cn: Tanya Chernonok
+sn: Tanya Chernonok
+mail: tanya@nchadvisors.kiev.ua
+o: NCH Advisors
+title: Accounting Dpt.
+telephoneNumber: 116
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Vitaliy Lunkan,ou=nchkiev,dc=nchadvisors
+cn: Vitaliy Lunkan
+sn: Vitaliy Lunkan
+mail: v_lunkan@nchadvisors.kiev.ua
+o: NCH Advisors
+title: Lawyer, Legal Dpt.
+telephoneNumber: 111
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Vladislav Demyanov,ou=nchkiev,dc=nchadvisors
+cn: Vladislav Demyanov
+sn: Vladislav Demyanov
+mail: vlad@nchadvisors.kiev.ua
+o: NCH Advisors
+title: Lawyer, Legal Dpt.
+telephoneNumber: 112
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=All NCH Moscow personnel,ou=nchmoscow,dc=nchadvisors
+cn: All NCH Moscow personnel
+sn: All NCH Moscow personnel
+mail: all@nchadvisors.ru
+o: MOSCOW
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Arutyunov Nikolay,ou=nchmoscow,dc=nchadvisors
+cn: Arutyunov Nikolay
+sn: Arutyunov Nikolay
+mail: nikolay@nchadvisors.ru
+o: MOSCOW
+title: Research
+telephoneNumber: 234
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Barinova Elena,ou=nchmoscow,dc=nchadvisors
+cn: Barinova Elena
+sn: Barinova Elena
+mail: alena@nchadvisors.ru
+o: MOSCOW
+title: Corporate actions
+telephoneNumber: 225
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Denisova Evgenia,ou=nchmoscow,dc=nchadvisors
+cn: Denisova Evgenia
+sn: Denisova Evgenia
+mail: evgenia.denisova@nchcapital.ru
+o: AGRO
+title: Deputy Director, Land Acquisition
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Desyatkov Andrey,ou=nchmoscow,dc=nchadvisors
+cn: Desyatkov Andrey
+sn: Desyatkov Andrey
+mail: andrew@nchadvisors.ru
+o: MOSCOW
+title: IT
+telephoneNumber: 227
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Dgobava Olga,ou=nchmoscow,dc=nchadvisors
+cn: Dgobava Olga
+sn: Dgobava Olga
+mail: olgaj@nchadvisors.ru
+o: MOSCOW
+title: Back-office
+telephoneNumber: 239
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Dudchenko Vladimir,ou=nchmoscow,dc=nchadvisors
+cn: Dudchenko Vladimir
+sn: Dudchenko Vladimir
+mail: bruce@nchadvisors.ru
+o: MOSCOW
+title: Trading
+telephoneNumber: 229
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Ertuna Maria,ou=nchmoscow,dc=nchadvisors
+cn: Ertuna Maria
+sn: Ertuna Maria
+mail: maria@nchadvisors.ru
+o: MOSCOW
+title: Administrative
+telephoneNumber: 237
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Evseyeva Lyubov,ou=nchmoscow,dc=nchadvisors
+cn: Evseyeva Lyubov
+sn: Evseyeva Lyubov
+mail: lyuba@nchadvisors.ru
+o: MOSCOW
+title: Reception
+telephoneNumber: 221
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Gerasimova Elena,ou=nchmoscow,dc=nchadvisors
+cn: Gerasimova Elena
+sn: Gerasimova Elena
+mail: hellen@nchadvisors.ru
+o: MOSCOW
+title: Accounting
+telephoneNumber: 246
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Ghidirim Patrick,ou=nchmoscow,dc=nchadvisors
+cn: Ghidirim Patrick
+sn: Ghidirim Patrick
+mail: patrick.ghidirim@nchcapital.ru
+o: AGRO
+title: Private Equity and Agrobusiness
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Gracheva Inga,ou=nchmoscow,dc=nchadvisors
+cn: Gracheva Inga
+sn: Gracheva Inga
+mail: inga@nchadvisors.ru
+o: MOSCOW
+title: Back-Office
+telephoneNumber: 231
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Guseva Tatyana,ou=nchmoscow,dc=nchadvisors
+cn: Guseva Tatyana
+sn: Guseva Tatyana
+mail: tatyana.guseva@nchcapital.ru
+o: AGRO
+title: Agro Investments
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Ishbulatov Roman,ou=nchmoscow,dc=nchadvisors
+cn: Ishbulatov Roman
+sn: Ishbulatov Roman
+mail: roman@nchadvisors.ru
+o: MOSCOW
+title: Legal
+telephoneNumber: 258
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Ivanov Maxim,ou=nchmoscow,dc=nchadvisors
+cn: Ivanov Maxim
+sn: Ivanov Maxim
+mail: maxim@nchadvisors.ru
+o: MOSCOW
+title: Research
+telephoneNumber: 228
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Kurdyukov Pavel,ou=nchmoscow,dc=nchadvisors
+cn: Kurdyukov Pavel
+sn: Kurdyukov Pavel
+mail: pavel@nchadvisors.ru
+o: MOSCOW
+title: IT, Systems Administrator
+telephoneNumber: 274
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Lapteva Alexandra,ou=nchmoscow,dc=nchadvisors
+cn: Lapteva Alexandra
+sn: Lapteva Alexandra
+mail: alexandra.lapteva@nchcapital.ru
+o: AGRO
+title: Private Equity and Agrobusiness
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Leskonog Victor,ou=nchmoscow,dc=nchadvisors
+cn: Leskonog Victor
+sn: Leskonog Victor
+mail: victor.leskonog@nchcapital.ru
+o: AGRO
+title: Private Equity and Agrobusiness
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Levkovsky Dmitry,ou=nchmoscow,dc=nchadvisors
+cn: Levkovsky Dmitry
+sn: Levkovsky Dmitry
+mail: dima@nchadvisors.ru
+o: MOSCOW
+title: Management
+telephoneNumber: 222
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Lipatova Elena,ou=nchmoscow,dc=nchadvisors
+cn: Lipatova Elena
+sn: Lipatova Elena
+mail: elena.lipatova@nchcapital.ru
+o: AGRO
+title: Private Equity and Agrobusiness
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Livshitz Valery,ou=nchmoscow,dc=nchadvisors
+cn: Livshitz Valery
+sn: Livshitz Valery
+mail: valery@nchadvisors.ru
+o: MOSCOW
+title: Back-office
+telephoneNumber: 242
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Malinkin Anton,ou=nchmoscow,dc=nchadvisors
+cn: Malinkin Anton
+sn: Malinkin Anton
+mail: anton.malinkin@nchcapital.ru
+o: AGRO
+title: Director, Agrobusiness Investments
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Morozov Andrey,ou=nchmoscow,dc=nchadvisors
+cn: Morozov Andrey
+sn: Morozov Andrey
+mail: morozov@nchadvisors.ru
+o: MOSCOW
+title: Legal
+telephoneNumber: 232
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Osipova Natalia,ou=nchmoscow,dc=nchadvisors
+cn: Osipova Natalia
+sn: Osipova Natalia
+mail: natalia.osipova@nchcapital.ru
+o: AGRO
+title: Manager, Real Estate Database
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Pervyakova Marina,ou=nchmoscow,dc=nchadvisors
+cn: Pervyakova Marina
+sn: Pervyakova Marina
+mail: marina@nchadvisors.ru
+o: MOSCOW
+title: Accounting
+telephoneNumber: 245
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Radchenko Andrey,ou=nchmoscow,dc=nchadvisors
+cn: Radchenko Andrey
+sn: Radchenko Andrey
+mail: andrey@nchadvisors.ru
+o: MOSCOW
+title: Private Equity
+telephoneNumber: 265
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Radionov Alexey,ou=nchmoscow,dc=nchadvisors
+cn: Radionov Alexey
+sn: Radionov Alexey
+mail: alex@nchadvisors.ru
+o: MOSCOW
+title: Back-office
+telephoneNumber: 240
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Shvander Victor,ou=nchmoscow,dc=nchadvisors
+cn: Shvander Victor
+sn: Shvander Victor
+mail: VICTOR@nchadvisors.ru
+o: MOSCOW
+title: Finance
+telephoneNumber: 259
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Stepanova Andgela,ou=nchmoscow,dc=nchadvisors
+cn: Stepanova Andgela
+sn: Stepanova Andgela
+mail: angela@nchadvisors.ru
+o: MOSCOW
+title: Back-office
+telephoneNumber: 255
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Sycheva Anna,ou=nchmoscow,dc=nchadvisors
+cn: Sycheva Anna
+sn: Sycheva Anna
+mail: anna.sycheva@nchcapital.ru
+o: AGRO
+title: Lawyer, Private Equity and Agrobusiness
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Tokolish John,ou=nchmoscow,dc=nchadvisors
+cn: Tokolish John
+sn: Tokolish John
+mail: jtokolish@infopro.spb.su
+o: ST.-PETE
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Tsatkhlanov Sanal,ou=nchmoscow,dc=nchadvisors
+cn: Tsatkhlanov Sanal
+sn: Tsatkhlanov Sanal
+mail: sanal.tsatkhlanov@nchcapital.ru
+o: AGRO
+title: Director, Land Acquisition
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Vasiliev Mikhail,ou=nchmoscow,dc=nchadvisors
+cn: Vasiliev Mikhail
+sn: Vasiliev Mikhail
+mail: nch@infopro.spb.su
+o: ST.-PETE
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Zhukova Daria,ou=nchmoscow,dc=nchadvisors
+cn: Zhukova Daria
+sn: Zhukova Daria
+mail: dasha@nchadvisors.ru
+o: MOSCOW
+title: Back-office
+telephoneNumber: 224
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=user,dc=nchadvisors
+givenName: user
+sn: slapd
+objectClass: inetOrgPerson
+objectClass: top
+cn: user
+userPassword:: dXNlcg==
+
+dn: cn=Aleksey Lysenko,ou=nchkiev,dc=nchadvisors
+cn: Aleksey Lysenko
+sn: Aleksey Lysenko
+mail: lysenko@nchadvisors.kiev.ua
+o: NCH Advisors
+title: Auditor
+telephoneNumber: 114
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Larisa Smalko,ou=nchkiev,dc=nchadvisors
+cn: Larisa Smalko
+o: NCH Advisors
+objectClass: inetOrgPerson
+objectClass: top
+title: Administrator, Reception
+mail: lora@nchadvisors.kiev.ua
+telephoneNumber: 101
+sn: Larisa Smalko
+
+dn: cn=Svetlana Belichenko,ou=nchkiev,dc=nchadvisors
+cn: Svetlana Belichenko
+o: NCH Advisors
+objectClass: inetOrgPerson
+objectClass: top
+telephoneNumber: 118
+title: Chief Accountant
+mail: belichenko@nchadvisors.kiev.ua
+sn: Svetlana Belichenko
+
+dn: cn=Vitaliy Ivanchenko,ou=nchkiev,dc=nchadvisors
+givenName: Vitaliy
+sn: Ivanchenko
+cn: Vitaliy Ivanchenko
+o: NCH Advisors
+telephoneNumber: 120
+mail: ivanchenko@nchadvisors.kiev.ua
+objectClass: inetOrgPerson
+objectClass: top
+
+dn: cn=Ludmila Gaiduchenko,ou=nchkiev,dc=nchadvisors
+cn: Ludmila Gaiduchenko
+o: NCH Advisors
+objectClass: inetOrgPerson
+objectClass: top
+title: Trader, Trading Dpt.
+mail: gaiduchenko@nchadvisors.kiev.ua
+telephoneNumber: 167
+sn: Ludmila Gaiduchenko
+
+dn: cn=Olga Makara,ou=nchkiev,dc=nchadvisors
+cn: Olga Makara
+o: NCH Advisors
+objectClass: inetOrgPerson
+objectClass: top
+title: Auditor
+mail: olga@nchadvisors.kiev.ua
+telephoneNumber: 122
+sn: Olga Makara
+
+dn: cn=Conference New,ou=nchkiev,dc=nchadvisors
+cn: Conference New
+o: NCH Advisors
+objectClass: inetOrgPerson
+objectClass: top
+telephoneNumber: 201
+sn: Conference New
+
+dn: cn=Konstantin Peresiedov,ou=nchkiev,dc=nchadvisors
+cn: Konstantin Peresiedov
+o: NCH Advisors
+objectClass: inetOrgPerson
+objectClass: top
+mail: peresiedov@nchadvisors.kiev.ua
+telephoneNumber: 155
+sn: Konstantin Peresiedov
+
+dn: cn=Pavel Dorochynsky,ou=nchkiev,dc=nchadvisors
+cn: Pavel Dorochynsky
+o: NCH Advisors
+objectClass: inetOrgPerson
+objectClass: top
+mail: p_dorochynsky@nchadvisors.kiev.ua
+telephoneNumber: 166
+sn:: UGF2ZWwgRHJvcmNoeW5za3kg
+
+dn: cn=Sergey Shepanskyi,ou=nchkiev,dc=nchadvisors
+cn: Sergey Shepanskyi
+o: NCH Advisors
+objectClass: inetOrgPerson
+objectClass: top
+mail: sshchepanskyi@nchadvisors.kiev.ua
+sn:: U2VyZ2V5IFNoZXBhbnNreWkg
+

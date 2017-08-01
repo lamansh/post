@@ -1,0 +1,85 @@
+# $FreeBSD: src/etc/mail/access.sample,v 1.3 2000/11/02 23:40:40 dirk Exp $
+#
+# Mail relay access control list.  Default is to reject mail unless the
+# destination is local, or listed in /etc/mail/local-host-names
+#
+cyberspammer.com		550 We don't accept mail from spammers
+FREE.STEALTH.MAILER@		550 We don't accept mail from spammers
+another.source.of.spam		REJECT
+okay.cyberspammer.com		OK
+188.72.225.*                    REJECT
+178.162.181.*                   REJECT
+192.168.0.100			RELAY
+192.168.0.195			RELAY
+127.0.0.1			RELAY
+62.244.3.197			RELAY
+192.168.0.92			RELAY
+192.168.0.13			RELAY
+192.168.0.10			RELAY
+earthlink.net			550 We don't accept mail from spammers
+maratoriy.com			550 We don't accept mail from spammers
+directimpressionsinc.com	550 We don't accept mail from spammers
+all@nchadvisors.kiev.ua		REJECT
+nch@nchadvisors.kiev.ua		REJECT
+vera@nchadvisors.kiev.ua	REJECT
+queenbonniered@yahoo.com	REJECT
+biznesexpert.com		550 We don't accept mail from spammers
+e-poshta.com.ua			550 We don't accept mail from spammers
+gts.lg.ua			550 We don't accept mail from spammers
+sms.mts.com.ua			550 We don't accept mail from spammers
+milo.org.ua			550 We don't accept mail from spammers
+mus.org.ua			550 We don't accept mail from spammers
+vynnyky.org.ua			550 We don't accept mail from spammers
+scool.org.ua			550 We don't accept mail from spammers
+sanik.org.ua			550 We don't accept mail from spammers
+pacanu.org.ua			550 We don't accept mail from spammers
+sorocan.org.ua			550 We don't accept mail from spammers
+keypee.org.ua			550 We don't accept mail from spammers
+ukrmail.org			550 We don't accept mail from spammers
+topmail.org.ua			550 We don't accept mail from spammers
+top.lg.ua			550 We don't accept mail from spammers
+dape.info			550 We don't accept mail from spammers
+mymail-in.net			550 We don't accept mail from spammers
+utg.kiev.ua			550 We don't accept mail from spammers
+premier-international.net	550 We don't accept mail from spammers
+ekat.ru				550 We don't accept mail from spammers
+hinet.net			550 We don't accept mail from spammers
+topgenerale.com			550 We don't accept mail from spammers
+investopedia.com		550 We don't accept mail from spammers
+scailer.com			550 We don't accept mail from spammers
+ubr.ua				550 We don't accept mail from spammers
+uol.ua				550 We don't accept mail from spammers
+startua.com			550 We don't accept mail from spammers
+ono.com				550 We don't accept mail from spammers
+coattailinvestor.com		550 We don't accept mail from spammers
+agritel.com			550 We don't accept mail from spammers
+composit.ru			550 We don't accept mail from spammers
+juno.com			550 We don't accept mail from spammers
+eftps.gov			550 We don't accept mail from spammers
+ehost.kiev.ua			550 We don't accept mail from spammers
+lequebecois.org			550 We don't accept mail from spammers
+businessmonitor.com		550 We don't accept mail from spammers
+execsense.com			550 We don't accept mail from spammers
+asko-life.com.ua		550 We don't accept mail from spammers
+jb-host.com.ua			550 We don't accept mail from spammers
+j-host.com.ua			550 We don't accept mail from spammers
+kouren.com.ua			550 We don't accept mail from spammers
+beckers.com.ua			550 We don't accept mail from spammers
+idntm.com.ua			550 We don't accept mail from spammers
+dentas.com.ua			550 We don't accept mail from spammers
+citypad.com.ua			550 We don't accept mail from spammers
+citym.com.ua			550 We don't accept mail from spammers
+ukrseed.kiev.ua			550 We don't accept mail from spammers
+uasity.com.ua			550 We don't accept mail from spammers
+newfriends4u.com		550 We don't accept mail from spammers
+akka.kiev.ua			550 We don't accept mail from spammers
+zm-nation.com.ua		550 We don't accept mail from spammers
+lircom.com.ua			550 We don't accept mail from spammers
+castun.com.ua			550 We don't accept mail from spammers
+b21pubs.com			550 We don't accept mail from spammers
+java-apk@i.kiev.ua              REJECT
+julia_s@nchadvisors.kiev.ua	REJECT
+foundation.com			REJECT
+roy@foundation.com		REJECT
+adm@speedy.com.ar		REJECT
+mineteh.com.ua			REJECT

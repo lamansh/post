@@ -1,0 +1,50 @@
+# /etc/crontab - root's crontab for FreeBSD
+#
+# $FreeBSD: releng/10.3/etc/crontab 194170 2009-06-14 06:37:19Z brian $
+#
+SHELL=/bin/sh
+PATH=/etc:/bin:/sbin:/usr/bin:/usr/sbin
+#
+#minute	hour	mday	month	wday	who	command
+#
+*/5	*	*	*	*	root	/usr/libexec/atrun
+#
+# Save some entropy so that /dev/random can re-seed on boot.
+*/11	*	*	*	*	operator /usr/libexec/save-entropy
+#
+# Rotate log files every hour, if necessary.
+0	*	*	*	*	root	newsyslog
+#
+# Perform daily/weekly/monthly maintenance.
+1	3	*	*	*	root	periodic daily
+15	4	*	*	6	root	periodic weekly
+30	5	1	*	*	root	periodic monthly
+#
+# Adjust the time zone if the CMOS clock keeps local time, as opposed to
+# UTC time.  See adjkerntz(8) for details.
+
+1,31	0-5	*	*	*	root	adjkerntz -a
+1	12	*	*	*	root	/usr/local/bin/sa-update --no-gpg && /usr/local/bin/sa-compile
+*/15    *       *       *       *       root    /usr/local/libexec/uucp/uucico -S nchny -C
+40      22      *       *       1,2,3,4,5 root  /usr/database/mold/sendimgs
+01       23      *       *       1,2,3,4,5 root  /usr/database/getdb
+01       23      *       *       1,2,3,4,5 root  /usr/database/mold/getdb
+00      19      *       *       1,2,3,4,5 root  /usr/database/sendimgs
+00       15      *       *       1,2,3,4,5 root  /usr/database/getdb
+05       23      *       *       1,2,3,4,5 root  /usr/database/getdb
+00      15      *       *       1,2,3,4,5 root  /usr/database/sendimgs
+00      17      *       *       1,2,3,4,5 root  /usr/database/getdb
+45      17      *       *       1,2,3,4,5 root  /usr/database/sendimgs
+15      11      *       *       1,2,3,4,5 root  /usr/database/getdb
+16      11      *       *       1,2,3,4,5 root  /usr/database/sendimgs
+01      13      *       *       1,2,3,4,5 root  /usr/database/getdb
+02      13      *       *       1,2,3,4,5 root  /usr/database/sendimgs
+48      17      *       *       1,2,3,4,5 root  /usr/database/getdb
+49      17      *       *       1,2,3,4,5 root  /usr/database/sendimgs
+00      17      *       *       1,2,3,4,5 root  /usr/database/getdb
+01      17      *       *       1,2,3,4,5 root  /usr/database/sendimgs
+
+#0       8       *       *       6       root    csup -g -L 2 /root/ports-supfile && /usr/local/sbin/portsdb -Fu
+1       1       1       *       *       root    /usr/cyrus/imap/archive/archive_mail >> /var/log/archive_mail.log
+*/30    *       *       *       *       root    /usr/sbin/ntpdate -u 192.168.0.250 > /dev/null
+#0       5       1       *       *       root    find /usr/imap/user/michael/ -type file -mtime +30 -exec mv {} /home/sharov/old/ \;

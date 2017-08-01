@@ -1,0 +1,3 @@
+#!/usr/local/bin/bash
+
+grep -rl "$1" /var/spool/imap/user/mailstore/ | xargs -I{} sa-learn --spam {};
