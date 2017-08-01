@@ -1,0 +1,25 @@
+#!/bin/sh
+DATE=$(date +%Y-%m-%d)
+#echo $DATE
+/bin/rm /tmp/back-to-general/backup_dir/*
+
+/bin/df -h > /tmp/back-to-general/backup_dir/liveFSsizes.$DATE
+/sbin/bsdlabel da0s1 > /tmp/back-to-general/backup_dir/liveSPsizes.$DATE
+
+
+dump -0Lf - / | gzip -9 > /tmp/back-to-general/backup_dir/root.$DATE.img.gz
+
+sleep 2
+dump -0 -L -f - /tmp | gzip -9 > /tmp/back-to-general/backup_dir/tmp.$DATE.img.gz
+sleep 2
+dump -0Lu -D /usr/local/etc/backup/dumpdates -f - /usr | gzip -9 > /tmp/back-to-general/backup_dir/usr.$DATE.img.gz
+sleep 2
+dump -0Lf - /var | gzip -9 > /tmp/back-to-general/backup_dir/var.$DATE.img.gz
+sleep 2mkdir
+/usr/local/bin/smbclient //192.168.0.60/BackupBSD -A /tmp/back-to-general/backupbsd -l /tmp/back-to-general -c "prompt; lcd /tmp/back-to-general/backup_dir recurse; mput *; exit;"
+#/usr/local/bin/smbclient //192.168.0.60/BackupBSD -A /tmp/back-to-general/backupbsd -l /tmp/back-to-general -c "prompt; lcd /usr/home/sharov/backup_dir recurse; mput *; exit;"
+cat /tmp/back-to-general/log.smbclient | mail -s "log post backup job" sharov@nchadvisors.kiev.ua
+
+#rm /tmp/back-to-general/backup_dir/*
+#echo "" > /tmp/back-to-general/log.smbclient
+#rm /tmp/back-to-general/backup_dir/* 

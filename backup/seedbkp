@@ -1,0 +1,11 @@
+#!/bin/sh
+#Config Message
+/usr/sbin/pkg_info > /tmp/pkg_info
+BACKUPFILE=backup-postnew-$(date +%m-%d-%Y).tar.gz
+tar Pcfz - --exclude /var/imap/socket --exclude /root/.cpan /root /etc /usr/local/etc /var/imap /usr/local/www /var/named /usr/src/sys/i386/conf/MYKERNEL /tmp/pkg_info /var/db/ports /var/db/openldap-data /usr/local/www/phpldapadmin/htdocs/ldif /usr/local/www/phpldapadmin/htdocs/tree.php | uuencode $BACKUPFILE | mail -s "postnew BACKUP files" roman@nchadvisors.kiev.ua
+rm /tmp/pkg_info
+BACKUPFILE=backup-postnew-logs-$(date +%m-%d-%Y).tar.gz
+tar Pcfz - /var/milter-greylist/greylist.db  | uuencode $BACKUPFILE | mail -s "postnew backup LOG files" roman@nchadvisors.kiev.ua
+#BAYES
+BACKUPFILE=backup-postnew-bayes-$(date +%m-%d-%Y).tar.gz
+tar Pcfz - /var/spool/MIMEDefang/.spamassassin  |  uuencode $BACKUPFILE | mail -s "postnew backup BAYES files" roman@nchadvisors.kiev.ua

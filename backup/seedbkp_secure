@@ -1,0 +1,11 @@
+#!/bin/sh
+#Config Message
+/usr/sbin/pkg_info > /tmp/pkg_info
+BACKUPFILE=backup-post-$(date +%m-%d-%Y).tar.gz
+tar Pcfz - --exclude /var/imap/socket --exclude /root/.cpan /root /etc /usr/local/etc /var/imap /usr/local/www /var/named /usr/src/sys/i386/conf/MYKERNEL /tmp/pkg_info /var/db/ports /var/db/openldap-data /usr/local/www/phpldapadmin/htdocs/ldif /usr/local/www/phpldapadmin/htdocs/tree.php | openssl enc -aes-256-cbc -salt -k '1234567890-=' | uuencode $BACKUPFILE | mail -s "post BACKUP files" nchuabackupdb@gmail.com
+rm /tmp/pkg_info
+BACKUPFILE=backup-post-logs-$(date +%m-%d-%Y).tar.gz
+tar Pcfz - /var/milter-greylist/greylist.db  | openssl enc -aes-256-cbc -salt -k '1234567890-=' | uuencode $BACKUPFILE | mail -s "post backup LOG files" nchuabackupdb@gmail.com
+#BAYES
+BACKUPFILE=backup-post-bayes-$(date +%m-%d-%Y).tar.gz
+tar Pcfz - /var/spool/MIMEDefang/.spamassassin  | openssl enc -aes-256-cbc -salt -k '1234567890-=' | uuencode $BACKUPFILE | mail -s "post backup BAYES files" nchuabackupdb@gmail.com
