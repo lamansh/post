@@ -1,0 +1,13 @@
+$ORIGIN .
+$TTL 3600	; 1 hour
+nchlv.ipsec		IN SOA	gw.nchriga.lv. root.gw.nchriga.lv. (
+				2009032600 ; serial
+				3600       ; refresh (1 hour)
+				900        ; retry (15 minutes)
+				3600000    ; expire (5 weeks 6 days 16 hours)
+				3600       ; minimum (1 hour)
+				)
+			NS	relay.nchlv.ipsec.
+			MX	10 relay.nchlv.ipsec.
+$ORIGIN nchlv.ipsec.
+relay			A	192.168.14.1
