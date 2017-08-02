@@ -1,0 +1,5 @@
+/var/lib/spamassassin/3.004001/updates_spamassassin_org
+
+smapc -R < message.msg
+
+/bayes/

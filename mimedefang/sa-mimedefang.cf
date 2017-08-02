@@ -1,0 +1,599 @@
+# SpamAssassin user preferences file.
+#
+# Format:
+#
+#   required_hits n
+#		(how many hits are required to tag a mail as spam.)
+#
+#   score SYMBOLIC_TEST_NAME n
+#		(if this is omitted, 1 is used as a default score.
+#		Set the score to 0 to ignore the test.)
+#
+# # starts a comment, whitespace is not significant.
+#
+# NOTE!  In conjunction with MIMEDefang, SpamAssassin can *NOT* make any
+# changes to the message header or body.  Any SpamAssassin settings that
+# relate to changing the message will have *NO EFFECT* when used from
+# MIMEDefang.  Instead, use the various MIMEDefang Perl functions if you
+# need to alter the message.
+###########################################################################
+
+trusted_networks 64.144.66.11  64.144.66.12  64.144.66.105  64.144.66.121  64.144.66.130
+trusted_networks 38.108.226.11 38.108.226.12 38.108.226.105 38.108.226.121 38.108.226.130
+trusted_networks 108.176.45.224/29
+trusted_networks 192.168.0.1   192.168.0.2   192.168.0.3    192.168.0.6    192.168.0.195
+trusted_networks 192.168.0.8   192.168.0.11  192.168.0.12   192.168.0.105
+trusted_networks 192.168.0.153 192.168.0.158 192.168.0.159 192.168.0.160 192.168.0.161 192.168.0.162 192.168.0.234
+internal_networks 192.168.0.0/24 62.244.3.192/26
+trusted_networks 192.168.0.0/24 62.244.3.192/26
+trusted_networks 192.168.10.0/24 192.168.11.0/24 192.168.12.0/24 192.168.13.0/24 192.168.14.0/24 192.168.15.0/24 172.16.10.0/24
+trusted_networks 78.107.139.8 # Moscow VOIP
+#trusted_networks 192.168.0.45 # Joel's laptop
+
+###########################################################################
+# First of all, the generally useful stuff; thresholds and the whitelist
+# of addresses which, for some reason or another, often trigger false
+# positives.
+
+required_hits	3.5
+
+# Whitelist and blacklist addresses are *not* patterns; they're just normal
+# strings.  one exception is that "*@isp.com" is allowed.  They should be in
+# lower-case.  You can either add multiple addrs on one line,
+# whitespace-separated, or you can use multiple lines.
+#
+# Monty Solomon: he posts from an ISP that has often been the source of spam
+# (no fault of his own ;), and sometimes uses Bcc: when mailing.
+#
+# whitelist_from		monty@roscom.com
+
+
+#whitelist_from          *@krayevyd-invest.com.ua
+#whitelist_from		*@kraevid-invest.com.ua
+#whitelist_from          *@gs-agro.com.ua
+#whitelist_from		*@ms-agro.com.ua
+#whitelist_from		*@agrocity.com.ua
+#whitelist_from		*@gloryproperty.com.ua
+whitelist_from          *@nchcapital.com
+whitelist_from		*@nchadvisors.com
+whitelist_from          *@nchadvisors.ru
+whitelist_from          *@nchadvisors.md
+whitelist_from		*@nchriga.lv
+whitelist_from          *@bioagro.com.ua
+whitelist_from          *@*.bioagro.com.ua
+whitelist_from          *@subscribe.ru
+whitelist_from          *@dtz.kiev.ua
+whitelist_from          *@maillist.ru
+whitelist_from          *@spp.com.ua
+whitelist_from          *@ingbank.com
+whitelist_from          *@promin-agro.com.ua
+whitelist_from          *@agrotrader.com.ua
+whitelist_from          *@dragon-capital.com
+whitelist_from          *@vasko-nazarchuk.com
+whitelist_from          *@chamber.ua
+whitelist_from          *@vab.ua
+whitelist_from          *@foyil.com
+whitelist_from          *@ebrd.com
+whitelist_from          *@csiua.com
+whitelist_from          *@geshem.net
+whitelist_from          demyanov_vlad@yahoo.com
+whitelist_from          *@samsung.com
+whitelist_from          v_lunkan@voliacable.com
+whitelist_from          *@pfts.com
+whitelist_from          szbanca@mail.ru
+whitelist_from          *@nchcapital.ru
+whitelist_from          *@concorde.com.ua
+whitelist_from          emailserver@pop3.amadeus.net
+whitelist_from          *@worldservice.com.ua
+whitelist_from          yovayager@gmail.com
+whitelist_from          serg_007@online.ua
+whitelist_from          pinchuk@zeppelin.ua
+whitelist_from          adubets@i.ua
+whitelist_from          scfmr@mail.ru
+whitelist_from          capitalconsult@inbox.ru
+whitelist_from          *@poltavadiamond.com.ua
+whitelist_from          tlotsman@bk.ru
+whitelist_from          zempa@mail.ru
+whitelist_from          himich-ko@ukr.net
+whitelist_from		alboyko@yandex.ru
+whitelist_from		chemeris_roman27@mail.ru
+whitelist_from		tlotsman@bk.ru
+whitelist_from		kovalchuk2966@rambler.ru
+whitelist_from		*@ufc-capital.com
+whitelist_from		*@sta.gov.ua
+whitelist_from		bagsv@mail.ru
+whitelist_from		Ant-kasyan@yandex.ru
+whitelist_from		resurst@mail.ru
+whitelist_from		alisulhi@gmail.com
+whitelist_from		zvit@sta.gov.ua
+whitelist_from		vacheslavbondarenko@gmail.com
+whitelist_from          n.bondar@i.ua
+whitelist_from		wasil1963@mail.ru
+whitelist_from		vladimir.g71@online.ua
+whitelist_from		vladymyr_gryschenko@ukr.net
+whitelist_from		katya.kras@mail.ru
+whitelist_from		V.Voloseckiy@mail.ru
+whitelist_from          ypodvysotskiy@ukr.net
+whitelist_from          *@inagro.com.ua
+whitelist_from          lenandrew@mail.ru
+whitelist_from          *@cctvsoyuz.com.ua
+whitelist_from           vk_55@mail.ru
+whitelist_from		gudz@scafco.com.ua
+whitelist_from		filmix@yandex.ru
+whitelist_from		info@filmix.com.ua
+whitelist_from          *@raw-agro.com
+whitelist_from          *@mbosi.net
+whitelist_from          galina_bgf@mail.ru
+whitelist_from          sn_popova@mail.ru
+whitelist_from 		*@rcv.com.ua
+whitelist_from		mvintoniv@mail.ru
+whitelist_from		kaput_soi@mail.ru
+whitelist_from		kosagovo@mail.ru
+whitelist_from		kosagovo@yandex.ru
+whitelist_from		teruzbat@ukr.net
+whitelist_from          *@zvit.spov.com.ua
+whitelist_from		viktoria_pronina@mail.ru
+whitelist_from		sarra_10@mail.ru
+whitelist_from		agrobudmekh@ukr.net
+whitelist_from		taison_2009.81@mail.ru
+whitelist_from          tehnolog1@list.ru
+whitelist_from          truslov@pap.pl.ua
+whitelist_from          v.filimonovich@i.ua
+whitelist_from		oooistic-spb@yandex.ru
+whitelist_from		idan_2001@mail.ru
+whitelist_from		RubanTema@mail.ru
+whitelist_from          r-odeskabel@i.ua
+whitelist_from		*@msb.org.ua
+whitelist_from		*@msb.ua
+whitelist_from		*@chamber.ua
+whitelist_from		storm13@list.ru
+whitelist_from		storm13@yandex.ru
+whitelist_from          bodyagin@new-city.md
+whitelist_from          michael_nchadvisors@hotmail.com
+whitelist_from		*@*.latagro.com.ua
+whitelist_from		*@latagro.com.ua
+whitelist_from		*@agroterra.ru
+whitelist_from          *@otpbank.com.ua
+whitelist_from          bondar@nchadvisors.kiev.ua
+whitelist_from          elenazhy@i.com.ua
+whitelist_from		*@promkabel.ua
+whitelist_from		pmezo@ukr.net
+whitelist_from		reubenrinat@yahoo.com
+whitelist_from		reuben_rinat@hotmail.com
+whitelist_from		*@msb.org.ua
+whitelist_from		*@vdservice.com
+whitelist_from          *@nsi-construction.com.ua
+whitelist_from		*@mmm.com
+whitelist_from		rubantema@mail.ru
+whitelist_from		hsm49ru@yahoo.co.uk
+whitelist_from		bill@hetlandseeds.com
+whitelist_from		dj.nina@i.ua
+whitelist_from		acid@post.nchadvisors.kiev.ua
+whitelist_from		*@brit-mark.com
+whitelist_from		sham.ulya@samex.com.ua
+whitelist_from		*@new-city.md
+whitelist_from		*@ua.ey.com
+whitelist_from		tskorupska@yahoo.com
+whitelist_from		gky@kvsz.com
+whitelist_from		oschid@web.de
+whitelist_from		tskorupska@yahoo.com
+whitelist_from		charles_canfield@yahoo.com
+whitelist_from		slohova@i.ua
+whitelist_from		kiev@ivkportal.com.ua
+whitelist_from		*@post.nchadvisors.kiev.ua
+whitelist_from		*@ca-cib.com
+whitelist_from		*@mts.com.ua
+whitelist_from		*@grandspa.lt
+whitelist_from		*@mti.ua
+whitelist_from		*@chsinc.com
+whitelist_from		*@synevo.com.ua
+whitelist_from		*@ukragroconsult.org
+whitelist_from		seven.mail1@gmail.com
+whitelist_from		peringa@inbox.ru
+whitelist_from		ser.svirid@mail.ua
+whitelist_from		*@omp.kiev.ua
+whitelist_from		*@flyuia.com
+whitelist_from		*@rikabiofuels.com
+whitelist_from		*@dnl.com
+whitelist_from		*@elementconsulting.co.uk
+whitelist_from		*@agribusiness.kiev.ua
+whitelist_from		vlad_dotsenko@mail.ru
+whitelist_from		*@nobleukraine.com
+whitelist_from		*gnomts@ua.fm 
+whitelist_from		00131529@rambler.ru 
+whitelist_from		*@unicreditleasing.ua
+whitelist_from		zakharchenko@mti.ua
+whitelist_from          *@istagroup.ua
+whitelist_from		mosyka@i.com.ua
+whitelist_from		h.rahman@atrogroup.com
+whitelist_from		kenmar@ukr.net
+whitelist_from		iryna@anta.org.ua
+whitelist_from		rcpd@lotus.uz.gov.ua
+whitelist_from		vlad-bliznec@mail.ru 
+whitelist_from		ingahotel@fibermail.hu
+whitelist_from		*@abc-kvadrat.com.ua
+whitelist_from		*@credit-agricole.com.ua
+whitelist_from		n.bravissimo@mail.ru
+whitelist_from		*@vds.kiev.ua
+whitelist_from		cytxr@rambler.ru
+whitelist_from		oksana_shevchuk1970@mail.ru
+whitelist_from		anjuta-bashtanik@mail.ru
+whitelist_from		svitlana@nchadvisors.kiev.ua
+whitelist_from		*@nobleukraine.com
+whitelist_from		*@vait.com
+whitelist_from		*@piligrim-m.com.ua
+whitelist_from		*@freehost.com.ua
+whitelist_from		*@sunlark.com.ua
+whitelist_from		*@deloitte.ua
+#whitelist_from 		zhanna_mak@mail.ru
+whitelist_from		*@apk-inform.com
+whitelist_from		cveta48@ukr.net
+whitelist_from		*@express-group.com.ua
+whitelist_from		*@ligazakon.ua
+whitelist_from		*@liga.net
+whitelist_from		midgardtour@gmail.com
+whitelist_from		WouterLoeff@thisisnoble.com
+whitelist_from		*@fibermail.hu
+whitelist_from		*@kum.hu
+whitelist_from		*@vataga.com.ua
+whitelist_from		*@project-agro.com
+whitelist_from		*@agritel.com
+whitelist_from		sburyak@i.ua
+whitelist_from		*@pts.mconnect.aero
+whitelist_from		*@cmegroup.com
+whitelist_from		*@it-resources.com.ua
+whitelist_from		abirins@gmail.com
+whitelist_from		ladonyaku@ukr.net
+whitelist_from		*@sferaagro.com.ua
+whitelist_from		*@everwelle.ee
+whitelist_from		*@kmpg.ru
+whitelist_from		*@prosperitycapital.com
+whitelist_from          *@sferaagro.com.ua
+whitelist_from		*@gointeractive.com.ua
+whitelist_from		*@thisisnoble.com
+whitelist_from		marina_pashkur@mail.ru
+whitelist_from		kddm@ukr.net 
+whitelist_from		kddmkddm@gmail.com
+whitelist_from		*@jpmorgan.com
+whitelist_from 		*@cleveram.com
+whitelist_from		ivk01@ukr.net
+whitelist_from		alek@variant.kiev.ua
+whitelist_from		*@agroprosperis.com
+whitelist_from		*@worldservice.ua
+whitelist_from		fonrittel@ukr.net
+whitelist_from		tatiyana_pavlovna@ukr.net
+whitelist_from		zk77@ukr.net
+whitelist_from		muzhchuk@ukr.net
+whitelist_from		*@aval.ua
+whitelist_from		*@smeta.cc.ua
+whitelist_from		*@vegavi.net
+whitelist_from		*@zvit.fse.gov.ua
+whitelist_from		nadija.boychuk@inventure.ua
+whitelist_from		*@minrd.gov.ua
+whitelist_from		*@volodarroz.com.ua
+whitelist_from		S.Lymbouras@hellenicbank.com
+whitelist_from		ivt@lex.expert
+whitelist_from		*@emailonline.chase.com
+whitelist_from		jake@vicorus.ch
+whitelist_from		*@it-resources.com.ua
+whitelist_from		allusya83@ukr.net
+whitelist_from		*@astra-bank.com.ua
+whitelist_from		svn.ukr@gmail.com
+whitelist_from 		todd.frazier@pioneer.com
+whitelist_from		*@ndsu.edu
+whitelist_from		*@progressiveag.com
+whitelist_from		*@vicorus.com	
+whitelist_from		research@vicorus.com
+whitelist_from		*@tgti.com.tw
+whitelist_from		janet70500@hotmail.com
+whitelist_from		*@passat-centre.com.ua
+whitelist_from		*@bcs.com.ua
+whitelist_from		*@poltavadiamond.com.ua
+whitelist_from		*@magicjack.com
+whitelist_from		notkontora@meta.ua
+whitelist_from		ag_cleancomfort@mail.ru
+whitelist_from		lv_lawyer@hotmail.com
+whitelist_from		olga.orlova@clubmed.kiev.ua
+whitelist_from		*@clubmed.kiev.ua
+whitelist_from		*@ap-bank.com
+whitelist_from		*@vodafone.ua
+whitelist_from		*@intelserv.com
+whitelist_from		pavas74@hotmail.com
+whitelist_from		aolefirenko@vodafone.ua
+whitelist_from		vdiachuk@vodafone.ua
+whitelist_from		*@apella.kiev.ua
+whitelist_from		onadtoka@vodafone.ua
+whitelist_from		*@vfshelpline.com
+whitelist_from		*@Vfsglobal.com
+whitelist_from		*@abbvie.com
+whitelist_from		*@orbita.ua
+whitelist_from		olgastar28@gmail.com
+whitelist_from		*@thisisnoble.com
+whitelist_from		ag-cleancomfort@mail.ru
+whitelist_from		liliya.lysenko@gmail.com
+whitelist_from		*@airasia.com
+whitelist_from		syg@miktech.eu
+whitelist_from		oksanochka1961@gmail.com
+whitelist_from		*@ryanair.com
+whitelist_from		*@bakertilly.ua
+whitelist_from		*@3x60esk-party.com
+whitelist_from		*@passat-centre.com.ua	
+whitelist_from		*@land.gon.ua
+whitelist_from		*@hicks.com
+whitelist_from		*@hilton.com
+whitelist_from		*@abraham-hicks.com
+whitelist_from		*@stratfor.com
+whitelist_from		*.mcsv.net
+whitelist_from		*.rsgsv.net
+whitelist_from		*@chamber.ua
+whitelist_from		*@interfax.kiev.ua
+whitelist_from		nickbez@mail.ru 
+whitelist_from		*@portmone.com
+whitelist_from		*@goodwine.ua
+whitelist_from		*@complysci.com
+whitelist_from		*@*.uz.gov.ua
+whitelist_from		booking@uz.gov.ua
+whitelist_from		restmatisse@gmail.com
+whitelist_from		*@intelserv.org
+whitelist_from		marinabieliakova@gmail.com
+whitelist_from		*@ndsu.edu
+whitelist_from		nika.ostratyuk@gmail.com
+
+# Add your blacklist entries in the same format...
+#
+blacklist_from		nadir1980@bigmir.net
+blacklist_from		*@twoomail.com
+blacklist_from		thehelp@mail.ru
+blacklist_from		*@forex4people.ru
+blacklist_from		rdc_25722533@meta.ua
+blacklist_from		*@lukoil.ua
+blacklist_from		info@h-art.com.ua
+blacklist_from		noreply@imf.org
+blacklist_from		queendebater@yahoo.com
+blacklist_from		*@ua.pwc.com
+blacklist_from		*@un.org
+blacklist_from		roy@foundation.com
+blacklist_from		*@foundation.com
+blacklist_from		*@mercury.net.ua
+blacklist_from		sales2.od@mineteh.com.ua
+blacklist_from		*@enews.nreionline.com
+blacklist_from		*@enews*
+blacklist_from		*@listedby.com
+blacklist_from		*@backertilly.ua
+blacklist_from		*@mineteh.com.ua
+blacklist_from		*@domrike.eu
+# Mail using languages used in these country codes will not be marked
+# as being possibly spam in a foreign language.
+#
+ok_locales		en ru ua cn
+#ok_languages            en ru ua
+normalize_charset       0
+# By default, the subject lines of suspected spam will be tagged.
+# This can be disabled here.
+#
+# rewrite_subject 0
+
+# By default, spamassassin will include its report in the body
+# of suspected spam. Enabling this causes the report to go in the
+# headers instead. Using 'use_terse_report' for this is recommended.
+#
+# report_header 1
+
+# By default, SpamAssassin uses a fairly long report format.
+# Enabling this uses a shorter format which includes all the
+# information in the normal one, but without the superfluous
+# explanations.
+#
+# use_terse_report 0
+
+# By default, spamassassin will change the Content-type: header of
+# suspected spam to "text/plain". This is a safety feature. If you
+# prefer to leave the Content-type header alone, set this to 0.
+#
+# defang_mime 0
+
+# By default, SpamAssassin will run RBL checks.  If your ISP already
+# does this, set this to 1.
+
+skip_rbl_checks 0
+
+###########################################################################
+# Add your own customised scores for some tests below.  The default scores are
+# read from the installed "spamassassin.cf" file, but you can override them
+# here.  To see the list of tests and their default scores, go to
+# http://spamassassin.taint.org/tests.html .
+
+# DP's Comments:
+# I played with bayes for a while. I now have new suggestions:
+
+# Define bayes_path ONLY if you need to override the location of the
+# databases (default is shown below). Instead of overriding it here you
+# probably should modify $sa_user_dir in local-filter.
+# It is a good idea to have same database for all mailservers, 
+# e.g. you can make it available to all your mailservers via NFS
+# I decided that I will keep bayes databases in
+# /usr/local/etc/mimedefang/bayes/.spamassassin
+# (technically it could be anywhere, as long as mailnull is the owner)
+# To simplify the configuration, I created a symbolic link from /bayes
+# to /usr/local/etc/mimedefang/bayes
+# on my primary machine. On other machines I mounted that directory from the
+# primary machine into /bayes (I used -maproot=mailnull:wheel)
+# I defined $sa_user_dir = '/bayes' in local-filter, and now the location of
+# my database files is under /bayes/.spamassasin/
+#bayes_path /var/spool/MIMEDefang/.spamassassin/bayes
+bayes_path /bayes/.spamassassin/bayes
+
+# SA default is 12.0, 6.0 is the minimum possible!
+bayes_auto_learn_threshold_spam 7.0
+
+# Seems to be resolving some locking problems for me:
+bayes_learn_to_journal 1
+
+# If you want to override the default location:
+#auto_whitelist_path /var/spool/MIMEDefang/.spamassassin/auto-whitelist
+#auto_whitelist_path /bayes/.spamassassin/auto-whitelist
+
+#auto_whitelist_factor 0.3
+
+# It seems to be necessary to sa-learn with --force-expire from cron, 
+# otherwise things may go wrong, especially in shared configuration.
+# If you set bayes_auto_expire to 0, make sure you have something like that
+# in your /etc/crontab:
+# 10	9	*	*	*	mailnull	cd /usr/local/etc/mimedefang && make expire 
+bayes_auto_expire 1
+bayes_expiry_max_db_size 1000000
+
+# skip unnecessary work done by SpamAssassin
+report_safe 0
+lock_method nfssafe
+
+# ignore some headers set by Pegasus and mimedefangi
+bayes_ignore_header Resent-Message-Id
+bayes_ignore_header Resent-from
+bayes_ignore_header Resent-to
+bayes_ignore_header Resent-Date
+bayes_ignore_header X-Spam-Score
+bayes_ignore_header X-Scanned-By
+score RCVD_IN_SL 3.0
+score REPLICA_WATCH 200.0
+score EM_ROLEX 200.0
+score __RU_PRICE_WIN1251 4.5
+score	URIBL_BLACK  3.0
+score	URIBL_GREY  0.25
+score	BAD_CREDIT  1.4
+score	BAYES_00    -0.5
+score	ALL_TRUSTED -15.0
+score   BAYES_99    10.0
+score  __RU_PORN_1_WIN1251 20.0
+score   SPF_PASS    -1.5
+score	SPF_FAIL 2.5
+score	SPF_SOFTFAIL 1.0
+score   SPF_HELO_FAIL 3.5
+score   SPF_HELO_SOFTFAIL 2.5 
+score   __TOCC_EXIST 3.9
+score   T_OBFU_JPG_ATTACH 4.5
+#score   HTML_IMAGE_0_32 10.0
+score	DC_JPEG_1_5 10.0
+BODY     SCREAMING_BODY /\!{3,}/i
+describe SCREAMING_BODY TOO_LOUD_BODY
+score    SCREAMING_BODY 2.0
+score	MIME_HTML_ONLY 2.0
+score	HTML_MESSAGE 2.0
+score	HTML_FONT_LOW_CONTRAST 0.5
+score	UNPARSEABLE_RELAY 1.0
+score	DRUGS_ERECTILE 7.0
+#header   NOT_TO_NCH To =~ /nchadvisors.kiev.ua/i
+#describe NOT_TO_NCH to_foreign domain
+#score    NOT_TO_NCH 0.0
+
+#meta     FROM_TO_NOT_NCH !NOT_FROM_NCH && !NOT_TO_NCH
+#describe FROM_TO_NOT_NCH TO and FROM not our domain
+#score    FROM_TO_NOT_NCH 5.5
+
+#header   __UNKNOWN_SERVER_MAILER Received =~ /unknown/i
+#describe __UNKNOWN_SERVER_MAILER Contain unknown in recived field
+#score    __UNKNOWN_SERVER_MAILER 4.0
+score DNS_FROM_AHBL_RHSBL 2.0	
+score RCVD_IN_BL_SPAMCOP_NET 3.0
+score RCVD_IN_RP_RNBL 3.0
+score RCVD_IN_BRBL_LASTEXT 3.0
+score RCVD_IN_PSBL 3.0	
+score FREEMAIL_FROM 1.5
+score FREEMAIL_REPLYTO 2.0
+score HEADER_FROM_DIFFERENT_DOMAINS 3.0
+score IMG_DIRECT_TO_MX 3.0
+
+header  UNKNOWN1 ALL =~ /\bunknown\b/
+score   UNKNOWN1 1.0
+
+header   SCREAMING_HEADER Subject =~ /\!/i
+describe SCREAMING_HEADER TOO_LOUD_SUBJ
+score    SCREAMING_HEADER 3.0
+
+header X_Mailer X-Mailer =~ /Microsoft Windows Mail/
+score  X_Mailer 10.0
+
+header X_Mailer1 X-mailer =~ /Microsoft Windows Live/
+score  X_Mailer1 3.0
+
+header Star exists:X-StarScan-Version
+score  Star 5.0
+
+#header Nod_Scanned exists:X-EsetId
+#score  Nod_Scanned -3.0
+ 
+header PHP_MAILER X-mailer =~ /PHP Mail/i
+score  PHP_MAILER 5.0
+
+header TO_N_IX TO =~ /.+\@n-ix\.com\.ua/i
+score TO_N_I 10.0
+
+BODY  QUOTED /(\&gt\;){2,}/i
+score QUOTED 10.0
+ 
+header UASITY ALL =~ /.+\@uasity\.com\.ua/i
+score  UASITY 10.0
+
+#header DOMAIN_KEY  exists:DomainKey-Signature
+#score  DOMAIN_KEY 10000.0
+
+header X_MIME X-MimeOLE =~ /6\.0\.6001\.18049/
+score  X_MIME 10.0
+
+#body  TEL_NO /\d{3}.+\d{2}.+\d{2}/
+#score TEL_NO 1.5
+
+#body  GRN /сайт|каталог|24 часа|грн/i
+#score GRN  3.5
+
+header NCH_MERCURY Received =~ /nch\.nchkiev\.net/
+score  NCH_MERCURY -20.0
+
+header RESENT_FROM_MERCURY Resent-from =~ /.+NCHKIEV\@nchadvisors\.kiev\.ua/
+score  RESENT_FROM_MERCURY -20.0
+
+header FAKE_ORGANIZATION Organization =~ /.+NCH.+Advisors.+/
+score  FAKE_ORGANIZATION 10.0
+
+header DKIM X_DKIM =~ /OpenDKIM/
+score  DKIM 10.0
+
+header DKIM1 exists:X-DKIM
+score  DKIM1 10.0
+
+score T_DKIM_INVALID 0.5 
+
+header XMAILRU exists:X-Mailru-Msgtype
+score  XMAILRU 10.0
+
+header XAUTH exists:X-Authentication-Warning
+score XAUTH 2.0	
+
+header JUSTCLICK Received =~ /justclick.ru/
+score  JUSTCLICK 10.0
+
+header METALEXPERT Message-ID =~ /him-kurier.ru/
+score  METALEXPERT 10.0
+
+header X_PHPMAILER X-Mailer =~ /PHPMailer/
+score  X_PHPMAILER 10.0
+
+header MAILCHIMP X-Mailer =~ /MailChimp/
+score  MAILCHIMP 10.0
+
+header LISTS exists:List-Unsubscribe
+score LISTS 5.0
+
+header	PULSE Return-Path =~ /sendpulse/
+score	PULSE 10.0
+
+score TVD_RCVD_SPACE_BRACKET 2.0
+score UNPARSEABLE_RELAY 3.0
+#score XAUTH 3.0
+header DOMRIKE Message-ID =~ /\@domrike\.eu/
+score  DOMRIKE 10.0
+
+header TOUND TO =~ /undisclosed-recipients/
+score TOUND 3.0
+
+score URIBL_BLACK 5.0

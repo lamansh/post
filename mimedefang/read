@@ -1,0 +1,3 @@
+/usr/local/etc/sasl2/Sendmail.conf
+pwcheck_method: auxprop
+

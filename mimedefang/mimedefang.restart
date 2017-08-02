@@ -1,0 +1,12 @@
+#!/bin/sh
+#Needed to restart mimedefang Please Dont use MIMEDEFANG.SH RESTART
+/usr/local/etc/rc.d/mimedefang stop
+/etc/rc.d/sendmail stop
+/usr/local/etc/rc.d/spamass-milter stop
+if echo `/sbin/ping -c 12 127.0.0.1` > /dev/null 2>&1 ; then #>& /dev/null
+/usr/local/etc/rc.d/spamass-milter start
+/usr/local/etc/rc.d/mimedefang start
+sleep 2
+/etc/rc.d/sendmail start
+sleep 1
+fi

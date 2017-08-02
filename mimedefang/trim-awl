@@ -1,0 +1,82 @@
+#!/usr/bin/perl
+# trim_whitelist
+# Mangled from check_whitelist from spamassassin-tools
+# Trims AWL files by removing the incredible bloat from one-off email addresses.
+
+use strict;
+use Fcntl;
+
+# must match line at top of lib/Mail/SpamAssassin/DBBasedAddrList.pm.
+# now off until 3.0
+# BEGIN { @AnyDBM_File::ISA = qw(DB_File GDBM_File NDBM_File SDBM_File); }
+
+use AnyDBM_File ;
+use DB_File;
+use vars qw( %oldawl %newawl $totalscore @keys @stat $uid $gid) ;
+
+my $db;
+my $newdb;
+if ($#ARGV == -1) {
+  $db = $ENV{HOME}."/.spamassassin/auto-whitelist";
+  $newdb = $ENV{HOME}."/.spamassassin/auto-whitelist-new";
+} else {
+  $db = $ARGV[0];
+  $newdb = $ARGV[0]."-new";
+}
+
+# copy old db to backup before doing anything
+# We copy instead of moving to keep the db live while we're processing.
+qx { cp $db $db-old };
+
+#tie %oldawl, "AnyDBM_File",$db, O_RDONLY, 0600
+#	or die "Cannot tie to old db '$db': $!\n";
+tie %oldawl, "DB_File",$db, O_RDONLY,0600
+	or die "Cannot tie to old db '$db': $!\n";
+#tie %newawl, "AnyDBM_File",$newdb, O_RDWR|O_CREAT, 0600
+#	or die "Cannot tie to new db '$newdb': $!\n";
+tie %newawl, "DB_File",$newdb, O_RDWR|O_CREAT, 0600
+	or die "Cannot tie to new db '$newdb': $!\n";
+
+my @keys = grep(!/totscore$/,keys(%oldawl));
+for my $key (@keys)
+{
+  my $totalscore = $oldawl{"$key|totscore"};
+  my $count = $oldawl{$key};
+  if(defined($totalscore)) {
+# If the count is 1, discard the entry, otherwise store the entry in the new db.
+    if ($count != 1) {
+      $newawl{$key} = $count;
+      $newawl{"$key|totscore"} = $totalscore;
+    }
+#    printf "% 8.1f %15s  --  %s\n",
+#		  $totalscore/$count, (sprintf "(%.1f/%d)",$totalscore/$count,$count),
+#		  $key;
+  }
+}
+untie %oldawl;
+untie %newawl;
+
+if ($< == 0) {
+  print "Getting correct UID/GID from original file...\n";
+  # We need this to make sure the new db is properly RW for the user that owns it.
+  # Do this BEFORE copying the new over the old!
+  # Note this is ONLY required while running as root- other users will get the proper
+  # ownership.
+  @stat = stat "$db";
+  $uid = $stat[4];
+  $gid = $stat[5];
+}
+
+# Copy the new db over the old
+qx { mv -f $newdb $db };
+
+if ($< == 0) {
+  print "Setting correct ownership on new db...\n";
+  # And finally make sure the new db is owned by the right user.
+  # DON'T chown the -old.db file- that just makes the problem worse!
+  chown $uid, $gid, "$db";
+} else {
+  print "You may want to delete the old AWL database\n".
+	"(~/.spamassassin/auto-whitelist-old) as it's probably\n".
+	" taking up quite a bit of disk space.\n";
+}

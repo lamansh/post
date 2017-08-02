@@ -1,0 +1,487 @@
+# NCH-filter v0.37 (c) Petrov Software
+
+# WARNING: in order for ZIP-archive scanning to work you need 
+# to install port p5-Archive-Zip
+
+# !!! You should make all changes in local-filter, not here!!!
+
+use strict;
+use Socket;
+use Fcntl qw(F_GETFL F_SETFL O_NONBLOCK);
+
+use vars qw($myoffice $mysecondary $myhostname $myhosts_pattern $myips_pattern $mytrustedips_pattern);
+use vars qw($mercury_down $SpamAdmin $pass_through $myspamtrap %MySpamTrap $myinternal %MyInternal %MyForwards %MySenderForwards);
+use vars qw($hits_reject $hits_toadmin $hits_copytoadmin $sa_user_dir %MyDomains %FileModTimes);
+
+# setting default values
+
+$myoffice = '';
+$mysecondary = 0;
+$myhosts_pattern = '';
+$myips_pattern   = '';
+$mytrustedips_pattern   = '';
+$myhostname     = `hostname`;
+chomp $myhostname;
+
+$SpamAdmin = "root@" . $myhostname;
+
+$pass_through = '';
+$myspamtrap = 1;
+
+$hits_reject  = 1.0;
+$hits_toadmin = 5.5;
+$hits_copytoadmin = 4.5;
+
+$sa_user_dir = '/var/spool/MIMEDefang';
+
+%MyDomains = {};
+
+my $localfilter = myfindfile('local-filter');
+require $localfilter if $localfilter ne '';
+
+$myspamtrap = 1 if $myspamtrap == 2 && $Features{"SpamAssassin"} == 0;
+
+if ($pass_through eq '') {
+ my $localkey = myfindfile('local-key');
+ if ($localkey ne '') {
+  $pass_through = `cat $localkey`;
+  chomp $pass_through;
+ }
+}
+
+$mercury_down = 0;
+
+md_syslog ('info', "OFFICE: $myoffice") if $myoffice ne '';
+
+sub recipient_forwards {
+ my ($email) = @_;
+ return get_forwards(\%MyForwards, 'local-forwards', $email);
+}
+
+sub mail_retention {
+ my ($email) = @_;
+ return get_forwards(\%MySenderForwards, 'local-retention', $email);
+}
+
+sub get_forwards {
+ my($listref, $name, $email) = @_;
+ my @list = ();
+
+ if ($email =~ /(.+)(\@.+$)/) {
+  my $domain = $2;
+
+  if (autoload($listref, $name, 1)) {
+   @list = (@list, split(' ', $$listref{$email}))  if exists($$listref{$email});
+   @list = (@list, split(' ', $$listref{$domain})) if exists($$listref{$domain});
+  }
+ }
+ return @list;
+}
+
+sub append_disclaimer {
+ my($entity, $sender) = @_;
+
+ $sender = canonicalize_email($sender);
+ if ($sender =~ /(.+)\@(.+$)/) {   
+  my $user = $1;
+  my $domain = $2;
+
+  my $include = domain_value($domain, 'footer-include');
+  my $exclude = domain_value($domain, 'footer-exclude');
+  if ((!defined($include) || $user =~ /$include/i) && (!defined($exclude) || $user !~ /$exclude/i)) {
+   my $text = domain_value_load($domain, 'footer-text');
+   append_text_boilerplate($entity, $text, 0) if defined($text);
+
+   my $html = domain_value_load($domain, 'footer-html');
+   append_html_boilerplate($entity, $html, 0) if defined($html);
+
+   if (defined($text) || defined($html)) {
+    md_syslog ('info', "$MsgID: Added $domain disclaimer");
+    return 1;
+   }
+  }
+ }
+ return 0;
+}
+
+sub domain_value_load {
+ my($domain, $key) = @_;
+
+ my $t = domain_value($domain, $key);
+ if (defined($t)) {
+  if (substr($t, 0, 1) eq '@') {
+   $t = substr($t, 1);
+   md_syslog ('info', "Loading $t");
+   $t = `cat $t`;
+   $MyDomains{$domain}{$key} = $t;
+  }
+ }
+ return $t;
+}
+
+sub domain_value {
+ my($domain, $key) = @_;
+
+ if (exists($MyDomains{$domain})) {
+  my $ref = $MyDomains{$domain};
+  return $$ref{$key} if ref($ref) eq 'HASH' && exists($$ref{$key});
+ }
+ return undef;
+}
+
+sub spam_assassin_report_as_spam (;$) {
+ my $object = spam_assassin_init(@_);
+ return undef unless $object;
+
+ my $mail = spam_assassin_mail();
+ return undef unless $mail;
+
+ my $status;
+ push_status_tag("Running SpamAssassin");
+ $status = $object->report_as_spam($mail);
+ $mail->finish();
+ pop_status_tag();
+ return $status;
+}
+
+sub InLocalTraps {
+ my($email) = @_;
+
+ return email_in_list(\%MySpamTrap, 'local-traps', $email) if $myspamtrap > 0;
+ return 0;
+}
+
+sub InLocalInternal {
+ my($email) = @_;
+
+ return email_in_list(\%MyInternal, 'local-internal', $email) if $myinternal > 0; 
+ return 0;
+}
+
+sub email_in_list {
+ my ($listref, $name, $text) = @_;
+
+ return exists($$listref{$text}) if autoload($listref, $name, 0);
+ return 0;
+}
+
+sub add_forwards() {
+ my ($refRecipients, $refForwards) = @_;
+ my ($recipient, $forward, $add);
+
+ foreach $forward (@$refForwards) {             
+  if (defined($forward)) { 
+   $add = 1;   
+   foreach $recipient (@$refRecipients) {   
+    if ($forward eq $recipient) {   
+     $add = 0;
+     last;
+    }
+   }
+   if ($add) {
+    add_recipient('<' . $forward . '>');
+    push @$refRecipients, $forward;
+   }
+  }
+ }
+}
+
+sub autoload {
+ # mode: 0 - simple list, 1 - use 2+ columns, e.g. for forwarding
+ my ($listref, $name, $mode) = @_;
+ my $file = myfindfile($name);
+ my $values;
+
+ if ($file ne '') {
+  open LIST, "<$file";
+  my $modtime = (stat(LIST))[9];
+  if (!defined($FileModTimes{$name}) || $FileModTimes{$name} != $modtime) {
+   md_syslog ('info', "Autoloading $file");
+   my (@list, $key);
+   %$listref = ();
+   local $_;
+   while (<LIST>) {
+    chomp();
+    ($_) = split('#'); # remove comments
+    @list = split();
+    if ($mode == 1) {
+     next if $#list < 1; # skip if we have less than 2 items on the line
+     $key = shift(@list);
+     $values = join(' ' , @list);
+     $values = join(' ', $$listref{$key}, $values) if exists($$listref{$key});
+     $$listref{$key} = $values;
+    } else {
+     next if $#list < 0; # skip empty lines
+     for $key (@list) {
+      $key = canonicalize_email($key);
+      $$listref{$key} = 1 if $key ne '';
+     }
+    }
+   }
+   $FileModTimes{$name} = $modtime;
+  }
+  close LIST;
+  return 1;
+ } else {
+  %$listref = ();
+ }
+ return 0;
+}
+
+sub myfindfile {
+ my($file) = @_;
+
+ if (-r "/usr/local/etc/mimedefang/$file") {
+  $file = "/usr/local/etc/mimedefang/$file";
+ } elsif (-r "$sa_user_dir/$file") { 
+  $file = "$sa_user_dir/$file";
+ } elsif ($sa_user_dir ne '/bayes' && -r "/bayes/$file") {
+  $file = "/bayes/$file";
+ } else {
+  $file = '';
+ }
+ return $file;
+}
+
+sub filter_helo {
+ my($ip, $hostname, $helo) = @_;
+
+# Can't say "HELO myhost" unless it comes from one of my IPs.
+ if ($myhosts_pattern ne '' && $helo =~ /$myhosts_pattern/i) {
+   if ($ip ne '127.0.0.1' && $myips_pattern ne '' && $ip !~ /$myips_pattern/) {
+#      syslog('info', "Host $ip said HELO $helo");
+      return('REJECT', "Go away... $ip is not our machine");
+   }
+ }
+ if ($helo =~ /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/ && $ip ne $helo) {
+#   syslog('info', "Header forgery attempt, $ip claims to be $helo");
+   return ('REJECT', "Header forgery attempt, $ip claims to be $helo");
+ }
+ return ('CONTINUE', "OK");
+}
+
+sub filter_sender {
+  my($sender, $ip, $hostname, $helo) = @_;
+  my($user, $domain);
+
+  if ($ip ne '127.0.0.1' && ($myips_pattern eq '' || $ip !~ /$myips_pattern/)) {
+   $sender = canonicalize_email($sender); 
+   if ($sender =~ /(.+)\@(.+$)/) {
+    $user = $1;
+    $domain = $2;
+    my $mode = domain_value($domain, 'auth-mode');
+
+    if (defined($mode)) {
+     # authenticated required
+     read_commands_file();	# Get %SendmailMacros hash
+     my $auth = $SendmailMacros{'auth_authen'};
+   # md_syslog('info', "USER=$user, DOMAIN=$domain, AUTH-MODE=$mode AUTH=$auth");
+     if (($mode & 1) && $auth eq $user) {
+      # authenticated as user
+     } elsif (($mode & 2) && $auth eq $sender) {
+      # authenticated as user@domain;
+     } elsif (($mode & 3) || $auth eq '') {
+      md_syslog('info', "$MsgID: Host $ip tries to send e-mail from $sender without authentication");
+      return('REJECT', "Proper authentication required for $ip.");
+     }
+     # authenticated
+    }
+   } 
+  }
+  return ('CONTINUE', "ok");
+}
+
+sub filter_recipient {
+ my($recipient, $sender, $ip, $host, $first, $helo, $rcpt_mailer, $rcpt_host, $rcpt_addr) = @_;
+
+ $rcpt_addr = canonicalize_email($rcpt_addr);
+ if ($rcpt_addr =~ /(.+)\@(.+$)/) {
+  my $server = domain_value($2, 'mercury-server');
+  # do not reject addresses defined in local-traps here, will handle them in filter_begin 
+  if (defined($server) && !InLocalTraps($rcpt_addr)) { 
+   my $nonlocal = mercury_nonlocal($server, $rcpt_addr);
+   if ($nonlocal == -1) { 
+    if ($mercury_down == 0) {
+     md_syslog('info', "MERCURY is DOWN: $rcpt_addr");
+     action_notify_administrator("Mercury seems to be down");
+     $mercury_down = 1;
+    }
+    return ('TEMPFAIL', "Try again later");
+   } else {
+    if ($mercury_down == 1) {
+     $mercury_down = 0;
+     md_syslog('info', "MERCURY is UP");
+     action_notify_administrator("Mercury is up now");
+    }
+    if ($nonlocal == 1) {
+#    md_syslog('info', "$MsgID: REJECTED ADDRESS: $rcpt_addr");
+     return ('REJECT', "$rcpt_addr... User unknown");
+    }
+   }
+  }
+ } # else - check for other nch and related domains
+ return ('CONTINUE', "OK");
+}
+
+# internal procedures
+
+sub mercury_nonlocal {
+ my($serverName, $address) = @_;
+
+ my($proto)      = getprotobyname("tcp")        || 6;
+ my($port)       = getservbyname("SMTP", "tcp") || 25;
+ my($serverAddr) = inet_aton($serverName);
+
+ socket(SMTP, PF_INET, SOCK_STREAM, $proto) or return -1;  
+
+ connect(SMTP, sockaddr_in($port, $serverAddr)) or return -1;   
+
+ my($flags) = fcntl(SMTP, F_GETFL, 0)      or return -1;  
+
+ fcntl(SMTP, F_SETFL, $flags | O_NONBLOCK) or return -1;                     
+
+ recvSMTP(512, 1);
+ my(@response) = sendSMTP("VRFY $address\n");
+
+ sendSMTP("QUIT\n");
+ close(SMTP);
+
+ if($response[0] eq '') {
+  return -1; # timeout or other error
+ } elsif($response[0] eq '550') {
+  return 1; # non-local address
+ } else {
+  return 0; # local 
+ }
+}
+
+sub closeSocket {     # close smtp socket on error
+ close(SMTP);
+ die("SMTP socket closed due to SIGINT\n");
+}
+
+sub sendSMTP {
+ my($buffer) = @_;
+
+ syswrite SMTP, $buffer, length($buffer);
+ $buffer = recvSMTP(512, 1);
+
+ return( (split(/ /, $buffer))[0] );
+}
+
+sub recvSMTP {
+ my($len, $timeout) = @_;
+ my($b, $buffer);
+ $buffer = '';
+
+ eval {
+  local $SIG{ALRM} = sub { die "alarm\n" }; # NB: \n required
+  alarm $timeout;
+  while($len > 0) { 
+   do {
+    sysread SMTP, $b, 1;
+   } while(length($b) == 0);
+   $buffer = $buffer . $b; 
+   --$len;
+   last if ($b eq "\n"); 
+  }
+  alarm 0;
+ };
+ if ($@) {
+   $buffer = '';
+   # unless $@ eq "alarm\n";   # propagate unexpected errors
+   # timed out
+# } else {
+   # didn't
+ }
+ return $buffer;
+}
+
+sub filter_initialize {
+  if(defined($SASpamTester)) {
+    $SASpamTester->signal_user_changed({user_dir => $sa_user_dir});
+    md_syslog ('info', "Changed SA user_dir to $sa_user_dir");
+  } else {
+    md_syslog ('info', "SASpamTester is undefined!");
+  }
+}
+
+sub header_value {
+  my($header) = shift;
+  my($len, $h);
+
+  return undef unless(open(HDRS, "<HEADERS"));
+
+  $len = length($header) + 1;
+  $header .= ":";
+  $header = lc($header);
+
+  while(<HDRS>) {
+    if (lc(substr($_, 0, $len)) eq $header) {
+      chomp($h = substr($_, $len));
+      while(substr($h, 0, 1) eq ' ') {
+        $h = substr($h, 1);
+      }
+      last;
+    }
+  }
+  close(HDRS);
+  return $h;
+}
+
+sub delete_header_values {
+  my($delete_all) = shift;
+  my($header) = shift;
+  my(@hval) = @_;
+  my($count, $len, $orig_header, @header_numbers, $h, $hcount, $i, $found);
+
+  return undef unless(open(HDRS, "<HEADERS"));
+
+  $orig_header = $header;
+  $len = length($header) + 1;
+  $header .= ":";
+  $header = lc($header);
+
+  $count = 0; $hcount = 0; $found = 0;
+  while(<HDRS>) {
+    if (lc(substr($_, 0, $len)) eq $header) {
+      $hcount++;
+
+      chomp($h = substr($_, $len));
+      while(substr($h, 0, 1) eq ' ') {
+        $h = substr($h, 1);
+      }
+
+      for($i = 0; $i <= $#hval; ++$i) {
+        $found = 1 if($h eq $hval[$i]);
+	if ($delete_all || $found) {
+          $header_numbers[$count] = $hcount;
+          $count++;
+          last;
+        }
+      }
+    }
+  }
+  close(HDRS);
+
+  # Delete in REVERSE order, in case Sendmail updates
+  # its count as headers are deleted... paranoid but safe.
+  while ($count > 0) {
+    --$count;
+#   syslog('info', "deleting header $orig_header ($header_numbers[$count])");
+    action_delete_header($orig_header, $header_numbers[$count]);
+  }
+  return $found;
+}
+
+sub canonicalize_email() {
+   my($email) = @_;
+   # Remove angle-brackets; convert to lower-case
+   if (defined($email)) {
+      $email = $1 if $email =~ /<(.*)>/;
+      $email = lc($email);
+   }
+   return $email;
+}
+
+1;

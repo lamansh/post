@@ -1,0 +1,561 @@
+# -*- Perl -*-
+#***********************************************************************
+#
+# mimedefang-filter
+#
+# Suggested minimum-protection filter for Microsoft Windows clients, plus
+# SpamAssassin checks if SpamAssassin is installed.
+#
+# Copyright (C) 2002 Roaring Penguin Software Inc.
+#
+# This program may be distributed under the terms of the GNU General
+# Public License, Version 2, or (at your option) any later version.
+#
+# $Id: suggested-minimum-filter-for-windows-clients 11353 2006-05-05 13:26:11Z dfs $
+#***********************************************************************
+
+#***********************************************************************
+# Set administrator's e-mail address here.  The administrator receives
+# quarantine messages and is listed as the contact for site-wide
+# MIMEDefang policy.  A good example would be 'defang-admin@mydomain.com'
+#***********************************************************************
+$AdminAddress = 'postmaster@localhost';
+$AdminName = "MIMEDefang Administrator's Full Name";
+
+#***********************************************************************
+# Set the e-mail address from which MIMEDefang quarantine warnings and
+# user notifications appear to come.  A good example would be
+# 'mimedefang@mydomain.com'.  Make sure to have an alias for this
+# address if you want replies to it to work.
+#***********************************************************************
+$DaemonAddress = 'mimedefang@localhost';
+
+#***********************************************************************
+# If you set $AddWarningsInline to 1, then MIMEDefang tries *very* hard
+# to add warnings directly in the message body (text or html) rather
+# than adding a separate "WARNING.TXT" MIME part.  If the message
+# has no text or html part, then a separate MIME part is still used.
+#***********************************************************************
+$AddWarningsInline = 0;
+
+#***********************************************************************
+# To enable syslogging of virus and spam activity, add the following
+# to the filter:
+# md_graphdefang_log_enable();
+# You may optionally provide a syslogging facility by passing an
+# argument such as:  md_graphdefang_log_enable('local4');  If you do this, be
+# sure to setup the new syslog facility (probably in /etc/syslog.conf).
+# An optional second argument causes a line of output to be produced
+# for each recipient (if it is 1), or only a single summary line
+# for all recipients (if it is 0.)  The default is 1.
+# Comment this line out to disable logging.
+#***********************************************************************
+md_graphdefang_log_enable('mail', 1);
+
+
+#***********************************************************************
+# Uncomment this to block messages with more than 50 parts.  This will
+# *NOT* work unless you're using Roaring Penguin's patched version
+# of MIME tools, version MIME-tools-5.411a-RP-Patched-02 or later.
+#
+# WARNING: DO NOT SET THIS VARIABLE unless you're using at least
+# MIME-tools-5.411a-RP-Patched-02; otherwise, your filter will fail.
+#***********************************************************************
+# $MaxMIMEParts = 50;
+
+#***********************************************************************
+# Set various stupid things your mail client does below.
+#***********************************************************************
+
+# Set the next one if your mail client cannot handle multiple "inline"
+# parts.
+$Stupidity{"NoMultipleInlines"} = 0;
+
+# Detect and load Perl modules
+detect_and_load_perl_modules();
+
+require "/usr/local/etc/mimedefang/NCH-filter";
+
+# The next lines force SpamAssassin modules to be loaded and rules
+# to be compiled immediately.  This may improve performance on busy
+# mail servers.  Comment the lines out if you don't like them.
+if ($Features{"SpamAssassin"}) {
+    spam_assassin_init()->compile_now(1) if defined(spam_assassin_init());
+
+    # If you want to use auto-whitelisting:
+#   if (defined($SASpamTester)) {
+#       use Mail::SpamAssassin::DBBasedAddrList;
+#       my $awl = Mail::SpamAssassin::DBBasedAddrList->new();
+#       $SASpamTester->set_persistent_address_list_factory($awl) if defined($awl);
+#   }
+}
+
+# This procedure returns true for entities with bad filenames.
+sub filter_bad_filename  {
+    my($entity) = @_;
+    my($bad_exts, $re);
+
+    # Bad extensions
+    $bad_exts = '(emf|wmf|ade|adp|app|asd|asf|asx|bas|bat|chm|cmd|com|cpl|crt|dll|exe|fxp|hlp|hta|hto|inf|ini|ins|isp|jse?|lib|lnk|mdb|mde|msc|msi|msp|mst|ocx|pcd|pif|prg|reg|scr|sct|sh|shb|shs|sys|url|vb|vbe|vbs|vcs|vxd|wmd|wms|wmz|wsc|wsf|cab|wsh|\{[^\}]+\})';
+
+    # Do not allow:
+    # - CLSIDs  {foobarbaz}
+    # - bad extensions (possibly with trailing dots) at end
+    $re = '\.' . $bad_exts . '\.*$';
+
+    return 1 if (re_match($entity, $re));
+
+    # Look inside ZIP files
+    if (re_match($entity, '\.zip$') and
+	$Features{"Archive::Zip"}) {
+	my $bh = $entity->bodyhandle();
+	if (defined($bh)) {
+	    my $path = $bh->path();
+	    if (defined($path)) {
+		$bad_exts = '(emf|wmf|ade|adp|app|asd|asf|asx|bas|bat|chm|cmd|com|cpl|crt|dll|exe|fxp|hlp|hta|hto|inf|ini|ins|isp|jse?|lib|lnk|msc|msi|msp|mst|ocx|pcd|pif|prg|reg|scr|sct|sh|shb|shs|sys|url|vb|vbe|vbs|vcs|vxd|wmd|wms|wmz|wsc|wsf|cab|wsh|\{[^\}]+\})';
+    		$re = '\.' . $bad_exts . '\.*$';
+		return re_match_in_zip_directory($path, $re);
+	    }
+	}
+    }
+    return 0;
+}
+
+#***********************************************************************
+# %PROCEDURE: filter_begin
+# %ARGUMENTS:
+#  $entity -- the parsed MIME::Entity
+# %RETURNS:
+#  Nothing
+# %DESCRIPTION:
+#  Called just before e-mail parts are processed
+#***********************************************************************
+sub filter_begin {
+    my($entity) = @_;
+    my @MyRecipients = map(canonicalize_email($_), @Recipients);
+
+# SPAM TRAP: Check if messages should be discarded/reported as spam right away
+    if ($myspamtrap > 0) {
+        my $trap = '';
+        foreach $recip (@MyRecipients) {
+            if (InLocalTraps($recip)) {
+                $trap = $recip;
+                last;
+            }
+        }
+	if ($trap ne '') {
+	    if ($myspamtrap == 2) {
+                md_syslog ('info', "$MsgID: Reporting SPAM ($trap)");
+                md_syslog('err', "$MsgID: Reporting SPAM error ($trap)") unless spam_assassin_report_as_spam();
+            }
+            md_syslog ('info', "$MsgID: Discarding SPAM ($trap)");
+            return action_discard();
+	}
+    }
+
+    my $from = canonicalize_email(header_value('From'));
+
+# BLACKBERRY: Support for BCC: messages
+    if ($MessageID =~ /blackberry/) {
+	my $csheader = 'X-cs';
+	my $csvalue = 'R';
+	my $copyself = header_value($csheader) eq $csvalue;
+	if ($copyself) {
+	    if (header_value('X-Autoforward') eq '1') {
+		my($resentfrom) = canonicalize_email(header_value('Resent-from'));
+		if ($resentfrom =~ /^(.+)\..+@(.+)$/) {
+		   $resentfrom = $1 . '@' . $2;
+		   if ($resentfrom eq $from) {
+#	              md_syslog('info', "$MsgID: Blackberry Copy-to-self discard ($from)");
+		      return action_discard();
+		   }
+		}
+	   }
+	} else {
+	   my $tocc = header_value('To') . ' ' . header_value('Cc'); 	
+           foreach $recip (@MyRecipients) {
+              if ($recip eq $from) {
+	   	 if ($tocc !~ /$from/i) {
+#	            md_syslog('info', "$MsgID: Blackberry copy-to-self: $from $#Recipients");
+		    return if stream_by_recipient();
+ 	  	    # insert at the top is needed for Pegasus to recognize CS properly
+		    action_insert_header($csheader, $csvalue);
+		    action_change_header('X-Blackberry-cs', $from);
+                    $Actions{'NoForward'} = 1;
+                 }
+	      }
+	   }
+        }
+	my $replyto = canonicalize_email(header_value('Reply-To'));
+	action_delete_all_headers('Reply-To') if $replyto eq $from;
+    }
+
+   # ALWAYS drop messages with suspicious chars in headers
+    if ($SuspiciousCharsInHeaders) {
+        md_graphdefang_log('suspicious_chars');
+	# action_quarantine_entire_message("Message quarantined because of suspicious characters in headers");
+	# Do NOT allow message to reach recipient(s)
+	# return action_discard();
+	return action_bounce("Suspicious characters found in mail headers - rejected");
+    }
+
+    # Copy original message into work directory as an "mbox" file for
+    # virus-scanning
+    md_copy_orig_msg_to_work_dir_as_mbox_file();
+
+    # Scan for viruses if any virus-scanners are installed
+    my($code, $category, $action);
+    if (delete_header_values(1, 'X-Pass-Through', $pass_through)) {
+	$Actions{'PassThrough'} = 1;
+        ($code, $category, $action) = (0, 'ok', 'ok');
+    } else {
+ 	($code, $category, $action) = message_contains_virus();
+    }
+
+    # Lower level of paranoia - only looks for actual viruses
+    $FoundVirus = ($category eq "virus");
+
+    # Higher level of paranoia - takes care of "suspicious" objects
+    # $FoundVirus = ($action eq "quarantine");
+
+    if ($FoundVirus) {
+	md_graphdefang_log('virus', $VirusName, $RelayAddr);
+	md_syslog('warning', "Bouncing because of virus $VirusName");
+	return action_bounce("Virus $VirusName found in mail - rejected");
+    }
+
+    if ($action eq "tempfail") {
+	action_tempfail("Problem running virus-scanner");
+	md_syslog('warning', "Problem running virus scanner: code=$code, category=$category, action=$action");
+    }
+}
+
+#***********************************************************************
+# %PROCEDURE: filter
+# %ARGUMENTS:
+#  entity -- a Mime::Entity object (see MIME-tools documentation for details)
+#  fname -- the suggested filename, taken from the MIME Content-Disposition:
+#           header.  If no filename was suggested, then fname is ""
+#  ext -- the file extension (everything from the last period in the name
+#         to the end of the name, including the period.)
+#  type -- the MIME type, taken from the Content-Type: header.
+#
+#  NOTE: There are two likely and one unlikely place for a filename to
+#  appear in a MIME message:  In Content-Disposition: filename, in
+#  Content-Type: name, and in Content-Description.  If you are paranoid,
+#  you will use the re_match and re_match_ext functions, which return true
+#  if ANY of these possibilities match.  re_match checks the whole name;
+#  re_match_ext checks the extension.  See the sample filter below for usage.
+# %RETURNS:
+#  Nothing
+# %DESCRIPTION:
+#  This function is called once for each part of a MIME message.
+#  There are many action_*() routines which can decide the fate
+#  of each part; see the mimedefang-filter man page.
+#***********************************************************************
+sub filter {
+    my($entity, $fname, $ext, $type) = @_;
+
+    return if message_rejected(); # Avoid unnecessary work
+
+    # Block message/partial parts
+    if (lc($type) eq "message/partial") {
+        md_graphdefang_log('message/partial');
+	action_bounce("MIME type message/partial not accepted here");
+	return action_discard();
+    }
+
+    if (filter_bad_filename($entity)) {
+        md_graphdefang_log('bad_filename', $fname, $type);
+        return action_bounce("Potentially harmful attachment $fname found in mail - rejected");
+#	return action_drop_with_warning("An attachment named $fname was removed from this document as it\nconstituted a security hazard.  If you require this document, please contact\nthe sender and arrange an alternate means of receiving it.\n");
+    }
+
+    # eml is bad if it's not multipart
+    if (re_match($entity, '\.eml')) {
+        md_graphdefang_log('non_multipart');
+	return action_drop_with_warning("A non-multipart attachment named $fname was removed from this document as it\nconstituted a security hazard.  If you require this document, please contact\nthe sender and arrange an alternate means of receiving it.\n");
+    }
+#    $size = (stat($entity->bodyhandle->path))[7];
+#    md_syslog('info', "ATT=$fname ($type) SIZE=$size");
+#    if ($size > 400000) {
+#      return action_replace_with_url($entity,
+#        "/www/data/www.nchcapital.net/mail_parts",
+#        "http://192.168.0.105/mail_parts",
+#        "The attachment was larger than 400,000 bytes.\n" .
+#        "It was removed, but may be accessed at this URL:\n\n" .
+#        "\t_URL_\n");
+#    }
+
+    # This will clean up HTML if Anomy::HTMLCleaner is installed.
+    # NOTE: We consider Anomy::HTMLCleaner to be TOO BUGGY for
+    # production use.  Uncomment the next lines at your peril!
+    #if ($Features{"HTMLCleaner"}) {
+    #   if ($type eq "text/html") {
+    #       return anomy_clean_html($entity);
+    #   }
+    #}
+
+    return action_accept();
+}
+
+#***********************************************************************
+# %PROCEDURE: filter_multipart
+# %ARGUMENTS:
+#  entity -- a Mime::Entity object (see MIME-tools documentation for details)
+#  fname -- the suggested filename, taken from the MIME Content-Disposition:
+#           header.  If no filename was suggested, then fname is ""
+#  ext -- the file extension (everything from the last period in the name
+#         to the end of the name, including the period.)
+#  type -- the MIME type, taken from the Content-Type: header.
+# %RETURNS:
+#  Nothing
+# %DESCRIPTION:
+#  This is called for multipart "container" parts such as message/rfc822.
+#  You cannot replace the body (because multipart parts have no body),
+#  but you should check for bad filenames.
+#***********************************************************************
+sub filter_multipart {
+    my($entity, $fname, $ext, $type) = @_;
+
+    return if message_rejected(); # Avoid unnecessary work
+
+    if (filter_bad_filename($entity)) {
+        md_graphdefang_log('bad_filename', $fname, $type);
+	action_notify_administrator("A MULTIPART attachment of type $type, named $fname was dropped.\n");
+        return action_bounce("Potentially harmful attachment $fname found in mail - rejected");
+#	return action_drop_with_warning("An attachment of type $type, named $fname was removed from this document as it\nconstituted a security hazard.  If you require this document, please contact\nthe sender and arrange an alternate means of receiving it.\n");
+    }
+
+    # eml is bad if it's not message/rfc822
+    if (re_match($entity, '\.eml') and ($type ne "message/rfc822")) {
+        md_graphdefang_log('non_rfc822',$fname);
+	return action_drop_with_warning("A non-message/rfc822 attachment named $fname was removed from this document as it\nconstituted a security hazard.  If you require this document, please contact\nthe sender and arrange an alternate means of receiving it.\n");
+    }
+
+    # Block message/partial parts
+    if (lc($type) eq "message/partial") {
+        md_graphdefang_log('message/partial');
+	action_bounce("MIME type message/partial not accepted here");
+	return;
+    }
+
+    return action_accept();
+}
+
+
+#***********************************************************************
+# %PROCEDURE: defang_warning
+# %ARGUMENTS:
+#  oldfname -- the old file name of an attachment
+#  fname -- the new "defanged" name
+# %RETURNS:
+#  A warning message
+# %DESCRIPTION:
+#  This function customizes the warning message when an attachment
+#  is defanged.
+#***********************************************************************
+sub defang_warning {
+    my($oldfname, $fname) = @_;
+    return
+	"An attachment named '$oldfname' was converted to '$fname'.\n" .
+	"To recover the file, right-click on the attachment and Save As\n" .
+	"'$oldfname'\n";
+}
+
+# If SpamAssassin found SPAM, append report.  We do it as a separate
+# attachment of type text/plain
+sub filter_end {
+    my($entity) = @_;
+
+    # If you want quarantine reports, uncomment next line
+    # send_quarantine_notifications();
+
+    # IMPORTANT NOTE:  YOU MUST CALL send_quarantine_notifications() AFTER
+    # ANY PARTS HAVE BEEN QUARANTINED.  SO IF YOU MODIFY THIS FILTER TO
+    # QUARANTINE SPAM, REWORK THE LOGIC TO CALL send_quarantine_notifications()
+    # AT THE END!!!
+
+    # No sense doing any extra work
+    return if message_rejected();
+
+    my($hits, $req, $names, $report, $do_check, $recip);
+    
+#    if (($Sender =~ /\@dragon-capital\.com/i) && ( $Recipient !~ /mailstore/i || $Recipient !~ /av/ || $Recipient !~ /sharov/ || $Recipient !~ /dima/ || $Recipient !~ /lyebyedyev/ || $Recipient !~ /peresiedov/)     ) {
+#	add_recipient ("ethan\@nchadvisors\.kiev\.ua");
+#	add_recipient ("dima\@nchadvisors\.kiev\.ua");
+#	add_recipient ("av\@nchadvisors\.kiev\.ua");
+    if ( ($Sender =~ /\@dragon-capital\.com/i) && ($Subject =~ /Dragon.Daily/i) ) {
+	foreach $recip (@Recipients) {
+	    if ($recip =~ /ethan/i ) {
+		add_recipient ("sharov\@nchadvisors\.kiev\.ua");
+		add_recipient ("dima\@nchadvisors\.kiev\.ua");
+		add_recipient ("lyebyedyev\@nchadvisors\.kiev\.ua");
+		add_recipient ("peresiedov\@nchadvisors\.kiev\.ua");
+		
+	    }	
+	}    
+    }
+    
+        
+    if (defined($Actions{'PassThrough'})) {
+        $do_check = 0;
+    } elsif ($Subject =~ /^#NET FOLDERS#/ && $RelayAddr =~ /$myips_pattern/) {
+	# outlook's netfolder sync message
+        $do_check = 0;
+    }  elsif (defined($SendmailMacros{"auth_authen"})){
+    $do_check = 0;
+
+    } else {
+        # Spam checks if SpamAssassin is installed
+        # Only scan messages smaller than 140kB.  Larger messages
+        # are extremely unlikely to be spam, and SpamAssassin is
+        # dreadfully slow on very large messages.
+        $do_check = $Features{"SpamAssassin"} && ($mytr4ustedips_pattern eq '' || $RelayAddr !~ /$mytrustedips_pattern/) && (-s "./INPUTMSG" < 7189000);
+    }
+    if ($do_check) {
+        ($hits, $req, $names, $report) = spam_assassin_check();
+    } else {
+	($hits, $req, $names, $report) = (0.0, 100.0, '', '');
+#        md_syslog('info', "PASS TEST OK for @Recipients");
+    }
+    # reject spam with high spam score immediately
+    if ($hits >= $hits_reject) {
+#	md_syslog ('info', "Bouncing mail - SpamAssassin reports $hits hits");
+	return action_bounce ("@Recipients... we do not accept e-mails from spammers ($hits)");
+    }
+    if ($hits >= $hits_toadmin) {
+	# delete all original recipients
+	foreach $recip (@Recipients) {
+           delete_recipient($recip);
+        }
+    } else {
+        # Check if we have mail forwarding enabled for any of the recipients
+	my @MyRecipients = map(canonicalize_email($_), @Recipients);
+        if (!defined($Actions{'NoForward'})) {
+            my @MyForwards  = map(recipient_forwards($_), @MyRecipients);
+            add_forwards(\@MyRecipients, \@MyForwards); 
+        }
+        push @MyRecipients, canonicalize_email($Sender);
+        # Check if we have sender forwarding enabled
+        @MyForwards  = map(mail_retention($_), @MyRecipients);
+        add_forwards(\@MyRecipients, \@MyForwards); 
+    }
+
+    # Should we send potential spam to administrator?
+    if ($hits >= $hits_toadmin || $hits >= $hits_copytoadmin) {
+       if ($SpamAdmin ne '') {
+          # record who it was for
+          action_add_header("X-Orig-Rcpts", join(", ", @Recipients));
+          add_recipient($SpamAdmin);
+       }
+    }
+
+    # this is to resolve compatibility problems between Lotus Domino and Mercury
+    delete_header_values(0, 'Sensitivity', '');
+    delete_header_values(0, 'Reply-To', '', '<>');
+    delete_header_values(0, 'Expiry-Date', '');
+ 
+    # this is to resolve compatibility problems between MS Exchange and Mercury
+    delete_header_values(0, 'X-MS-Has-Attach', '');
+    delete_header_values(0, 'X-MS-TNEF-Correlator', '');
+
+    action_delete_all_headers('X-YMail-OSG');
+
+    my($score);
+    if ($hits < 40) {
+	$score = "*" x int($hits);
+    } else {
+	$score = "*" x 40;
+    }
+    # We add a header which looks like this:
+    # X-Spam-Score: 6.8 (******) NAME_OF_TEST,NAME_OF_TEST
+    # The number of asterisks in parens is the integer part
+    # of the spam score clamped to a maximum of 40.
+    # MUA filters can easily be written to trigger on a
+    # minimum number of asterisks...
+    if ($hits >= $req) {
+        md_graphdefang_log('spam', $hits, $RelayAddr);
+
+	# If you find the SA report useful, add it, I guess...
+	 action_add_part($entity, "text/plain", "-suggest", "$report\n", "SpamAssassinReport.txt", "inline");
+
+	# A container for the original message
+	my $raw_container = MIME::Entity->build(
+	    Type	=> 'text/plain',
+	    Description	=> 'Raw message',
+	    Data	=> [ "" ],
+	);
+
+	my $container = MIME::Entity->build(
+	    Type	=> 'message/rfc822',
+	    Description	=> 'Original message',
+	    Data	=> [ "" ],
+	);
+
+	my $parser = new MIME::Parser;
+	open(IN, '< INPUTMSG');
+	my $original = $parser->parse(\*IN);
+	close(IN);
+
+	$original->head()->replace('X-Relay-Addr', $RelayAddr);
+	$RelayHostname ||= 'N/A';
+	$original->head()->replace('X-Relay-Host', $RelayHostname);
+	$original->head()->replace('X-Relay-Time', scalar(localtime));
+
+	# Add the original message to the container
+	$raw_container->add_part($original);
+	$container->add_part($original);
+
+	my $reportPart = MIME::Entity->build(
+	    Type	=> 'text/plain',
+	    Description	=> 'spam warning',
+	    Data	=> [ $report ],
+	);
+
+	$entity->parts([ $reportPart ]);
+	$entity->head()->mime_attr('content-type' => 'multipart/mixed');
+	$entity->head()->mime_attr('content-type.boundary' => '------------=_' . scalar(time) ."-$$-nikc");
+
+	$entity->add_part($raw_container);
+	$entity->add_part($container);
+	action_change_header('Subject', "[SPAM $hits]: $Subject");
+	action_change_header("X-Spam-Score", "$hits ($score) $names");
+	action_rebuild();
+    } elsif ($hits >= $hits_toadmin || $hits >= $hits_copytoadmin) {
+	action_change_header("X-Spam-Score", "$hits ($score) $names");
+    } else {
+	# Delete any existing X-Spam-Score header?
+	#action_delete_header("X-Spam-Score");
+
+# add disclaimer to local e-mails
+  	if (header_value('X-Scanned-By') eq '' && header_value('Resent-from') eq '') {
+	   append_disclaimer($entity, $Sender);
+	}
+    }
+
+    # I HATE HTML MAIL!  If there's a multipart/alternative with both
+    # text/plain and text/html parts, nuke the text/html.  Thanks for
+    # wasting our disk space and bandwidth...
+
+    # If you want to strip out HTML parts if there is a corresponding
+    # plain-text part, uncomment the next line.
+    # remove_redundant_html_parts($entity);
+
+    md_graphdefang_log('mail_in');
+
+    # Deal with malformed MIME.
+    # Some viruses produce malformed MIME messages that are misinterpreted
+    # by mail clients.  They also might slip under the radar of MIMEDefang.
+    # If you are worried about this, you should canonicalize all
+    # e-mail by uncommenting the action_rebuild() line.  This will
+    # force _all_ messages to be reconstructed as valid MIME.  It will
+    # increase the load on your server, and might break messages produced
+    # by marginal software.  Your call.
+
+    # action_rebuild();
+}
+
+# DO NOT delete the next line, or Perl will complain.
+1;
+
